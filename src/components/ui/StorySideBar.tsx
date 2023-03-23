@@ -1,4 +1,4 @@
-import { For, createSignal, Show, JSXElement, onMount } from "solid-js"
+import { For, createSignal, Show, JSXElement, onMount, createEffect, onCleanup } from "solid-js"
 import { A } from "solid-start"
 import { IconTypes } from "solid-icons"
 import {
@@ -13,10 +13,16 @@ import {
 
 type ListType = { name: string; icon: IconTypes; href: string; childrenList: { name: string; href: string }[] }
 
-// Tailwind md = 768px
-const breakpoint = 768
-
 const [open, setOpen] = createSignal(false)
+const [windowWidth, setWindowWidth] = createSignal(0)
+const [mobileScreen, setMobileScreen] = createSignal(true)
+
+// Tailwind md = 768px
+const BREAKPOINT = 768
+// Randomly chosen
+const SIDENAV_MAX_WIDTH = 240
+// Calculated using padding and width of nav list icons
+const SIDENAV_MIN_WIDTH = 64
 
 const navList: ListType[] = [
    { name: "Home", icon: TiHomeOutline, href: "/", childrenList: [] },
@@ -26,10 +32,10 @@ const navList: ListType[] = [
       icon: TiDocument,
       href: "/",
       childrenList: [
-         { name: "Chapter 1", href: "chapter-1" },
-         { name: "Chapter 2", href: "chapter-2" },
-         { name: "Chapter 3", href: "chapter-3" },
-         { name: "Chapter 4", href: "chapter-4" },
+         { name: "Chapter 1", href: "chapters/chapter-1" },
+         { name: "Chapter 2", href: "chapters/chapter-2" },
+         { name: "Chapter 3", href: "chapters/chapter-3" },
+         { name: "Chapter 4", href: "chapters/chapter-4" },
       ],
    },
    { name: "Characters", icon: TiUserOutline, href: "/", childrenList: [] },
@@ -55,12 +61,12 @@ const SideLink = ({ item }: { item: ListType }) => {
                <span class="!w-12 !h-12 flex items-center justify-center text-xl">
                   <item.icon />
                </span>
-               <Show when={open()}>
+               <Show when={mobileScreen() ? true : open()}>
                   <span class="font-medium">{item.name}</span>
                </Show>
             </A>
 
-            <Show when={hasChildren && open()}>
+            <Show when={(hasChildren && open()) || (hasChildren && mobileScreen())}>
                <button
                   onClick={toggleSubMenu}
                   class={` ${openSubMenu() ? "-rotate-90" : "rotate-90"} px-3 text-xl transition-all`}
@@ -71,12 +77,12 @@ const SideLink = ({ item }: { item: ListType }) => {
          </div>
 
          <Show when={openSubMenu() && open()}>
-            <ul class="px-2 m-1 border-l border-slate-500">
+            <ul class="px-2 m-1 border-l border-slate-500 origin-top">
                <SubMenu item={item} />
             </ul>
          </Show>
 
-         <Show when={!open() && isShown() && hasChildren}>
+         <Show when={hasChildren && !open() && isShown() && !mobileScreen()}>
             <div
                onMouseEnter={() => setIsShown(true)}
                onMouseLeave={() => setIsShown(false)}
@@ -112,36 +118,49 @@ interface SideBarProps {
 export default function StorySideBar(props: SideBarProps) {
    const [sideNavWidth, setSideNavWidth] = createSignal(0)
 
-   onMount(() => {
-      const windowWidth = window.innerWidth
-      console.log(windowWidth)
-      setOpen(false)
-      setSideNavWidth(64)
+   createEffect(() => setMobileScreen(windowWidth() < BREAKPOINT))
+
+   createEffect(() => {
+      let navWidth = mobileScreen() ? SIDENAV_MAX_WIDTH : open() ? SIDENAV_MAX_WIDTH : SIDENAV_MIN_WIDTH
+      setSideNavWidth(navWidth)
    })
 
-   const toggleOpen = () => {
-      setOpen((prev) => !prev)
+   const handleResize = () => setWindowWidth(window?.innerWidth)
 
-      let width = open() ? 240 : 64
-      setSideNavWidth(width)
-   }
+   onMount(() => {
+      window?.addEventListener("resize", handleResize)
+      handleResize()
+      setOpen(windowWidth() < BREAKPOINT ? false : true)
+   })
+
+   onCleanup(() => (typeof window === "undefined" ? null : window?.removeEventListener("resize", handleResize)))
 
    return (
       <>
-         <div style={{ width: sideNavWidth() + "px" }} class="fixed left-0 top-0 bottom-0 bg-white p-2">
+         <div
+            style={{
+               width: mobileScreen() ? "100%" : sideNavWidth() + "px",
+               "max-width": SIDENAV_MAX_WIDTH + "px",
+               transform: mobileScreen() ? (open() ? "translateX(0)" : "translateX(-100%)") : "translateX(0)",
+            }}
+            class="fixed left-0 top-0 bottom-0 bg-white p-2 transition-all"
+         >
             <ul class="space-y-1 flex flex-col h-full mt-20">
                <For each={navList}>{(item) => <SideLink item={item} />}</For>
             </ul>
 
             <button
-               onClick={toggleOpen}
+               onClick={() => setOpen((prev) => !prev)}
                class="absolute top-0 right-0 translate-x-full text-xl p-2 rounded-xl text-slate-700 hover:text-black"
             >
                <TiThMenu />
             </button>
          </div>
 
-         <div style={{ "margin-left": sideNavWidth() + "px" }} class="overflow-scroll">
+         <div
+            style={{ "margin-left": mobileScreen() ? 0 : sideNavWidth() + "px" }}
+            class="overflow-scroll transition-[margin]"
+         >
             {props.children}
          </div>
       </>
