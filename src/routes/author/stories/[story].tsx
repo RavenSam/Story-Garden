@@ -5,7 +5,9 @@ export default function StoryLayout() {
    return (
       <>
          <StorySideBar>
-            <Outlet />
+            <div class="min-h-screen">
+               <Outlet />
+            </div>
          </StorySideBar>
       </>
    )
