@@ -44,7 +44,7 @@ const navList: ListType[] = [
 
 const SideLink = ({ item }: { item: ListType }) => {
    const [openSubMenu, setOpenSubMenu] = createSignal(false)
-   const [isShown, setIsShown] = createSignal(false)
+   // const [isShown, setIsShown] = createSignal(false)
 
    const hasChildren = item.childrenList.length
 
@@ -53,8 +53,8 @@ const SideLink = ({ item }: { item: ListType }) => {
    return (
       <li class="relative">
          <div
-            onMouseEnter={() => hasChildren && !open() && setIsShown(true)}
-            onMouseLeave={() => hasChildren && !open() && setIsShown(false)}
+            // onMouseEnter={() => hasChildren && !open() && setIsShown(true)}
+            // onMouseLeave={() => hasChildren && !open() && setIsShown(false)}
             class="flex items-center rounded-xl text-slate-700 hover:text-black hover:bg-slate-200"
          >
             <A href={item.href} class="flex items-center w-full ">
@@ -82,7 +82,7 @@ const SideLink = ({ item }: { item: ListType }) => {
             </ul>
          </Show>
 
-         <Show when={hasChildren && !open() && isShown() && !mobileScreen()}>
+         {/* <Show when={hasChildren && !open() && isShown() && !mobileScreen()}>
             <div
                onMouseEnter={() => setIsShown(true)}
                onMouseLeave={() => setIsShown(false)}
@@ -92,7 +92,7 @@ const SideLink = ({ item }: { item: ListType }) => {
                   <SubMenu item={item} />
                </ul>
             </div>
-         </Show>
+         </Show> */}
       </li>
    )
 }
@@ -143,7 +143,7 @@ export default function StorySideBar(props: SideBarProps) {
                "max-width": SIDENAV_MAX_WIDTH + "px",
                transform: mobileScreen() ? (open() ? "translateX(0)" : "translateX(-100%)") : "translateX(0)",
             }}
-            class="fixed left-0 top-0 bottom-0 bg-white p-2 transition-all"
+            class="fixed left-0 top-0 bottom-0 bg-white p-2 transition-all z-10"
          >
             <ul class="space-y-1 flex flex-col h-full mt-20">
                <For each={navList}>{(item) => <SideLink item={item} />}</For>

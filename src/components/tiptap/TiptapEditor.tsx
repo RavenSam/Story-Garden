@@ -2,9 +2,11 @@ import { createTiptapEditor } from "solid-tiptap"
 import StarterKit from "@tiptap/starter-kit"
 import BubbleMenu from "@tiptap/extension-bubble-menu"
 import Typography from "@tiptap/extension-typography"
+import Underline from "@tiptap/extension-underline"
 import { createSignal, JSX, Show } from "solid-js"
 import { Toolbar } from "solid-headless"
-import ToolbarContents from "./ToolbardContent"
+import FloatingToolbar from "./FloatingToolbar"
+import FixedToolbar from "./FixedToolbar"
 
 const CONTENT = `
   <h2>
@@ -43,29 +45,30 @@ export default function TiptapEditor(): JSX.Element {
 
    const editor = createTiptapEditor(() => ({
       element: container()!,
-      extensions: [
-         StarterKit,
-         BubbleMenu.configure({
-            element: menu()!,
-         }),
-         Typography,
-      ],
+      extensions: [StarterKit, BubbleMenu.configure({ element: menu()! }), Typography, Underline],
       editorProps: {
          attributes: {
-            class: "p-8 focus:outline-none prose max-w-full",
+            class: "p-2 md:p-8 focus:outline-none prose max-w-full",
          },
       },
       content: CONTENT,
    }))
 
    return (
-      <div class="">
+      <>
          <Toolbar ref={setMenu} class="shadow bg-white  rounded-xl" horizontal>
             <Show when={editor()} keyed>
-               {(instance) => <ToolbarContents editor={instance} />}
+               {(instance) => <FloatingToolbar editor={instance} />}
             </Show>
          </Toolbar>
-         <div class="min-h-[80vh] overflow-y-scroll" ref={setContainer} />
-      </div>
+
+         <div class="relative">
+            <Show when={editor()} keyed>
+               {(instance) => <FixedToolbar editor={instance} />}
+            </Show>
+
+            <div class="min-h-[80vh] overflow-y-scroll" ref={setContainer} />
+         </div>
+      </>
    )
 }

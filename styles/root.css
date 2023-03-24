@@ -2,6 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+   .btn {
+      @apply border-none text-center flex items-center justify-center cursor-pointer outline-none disabled:opacity-30 disabled:pointer-events-none 
+      after:rounded-xl after:outline after:outline-emerald-500 after:outline-offset-4 focus-visible:after:block;
+   }
+}
+
+.btn:after {
+   width: 100%;
+   height: 100%;
+   content: "";
+   position: absolute;
+   top: 0;
+   left: 0;
+   display: none;
+}
+
 .dynamic-shadow {
    position: relative;
 }
@@ -16,4 +33,21 @@
    filter: blur(0.4rem);
    opacity: 0.7;
    z-index: -1;
+}
+
+/* -- Nested List  -- */
+
+/* Set the first layer of list items to regular numeric decimals */
+.prose ol {
+   list-style-type: decimal;
+}
+
+/* Set the second layer of list items to lowercase alphabetic */
+.prose ol > li > ol {
+   list-style-type: lower-alpha;
+}
+
+/* Set the third layer of list items to uppercase Roman numerals */
+.prose ol > li > ol > li > ol {
+   list-style-type: upper-roman;
 }

@@ -1,5 +1,6 @@
 import { Editor } from "@tiptap/core"
 import { Toggle } from "solid-headless"
+import { TiAdjustBrightness } from "solid-icons/ti"
 import { JSX } from "solid-js"
 import { createEditorTransaction } from "solid-tiptap"
 
@@ -91,9 +92,7 @@ function Control(props: ControlProps): JSX.Element {
       <Toggle
          defaultPressed={false}
          class={`${props.class} w-9 h-9 flex items-center justify-center rounded-xl hover:bg-slate-200 focus:outline-none focus-visible:ring focus-visible:ring-emerald-400 focus-visible:ring-opacity-75`}
-         classList={{
-            "bg-emerald-100 text-emerald-500": flag(),
-         }}
+         classList={{ "bg-emerald-100 text-emerald-500": flag() }}
          title={props.title}
          onChange={props.onChange}
       >
@@ -102,12 +101,13 @@ function Control(props: ControlProps): JSX.Element {
    )
 }
 
+const controlList = [{ title: "", key: "", class: "", icon: TiAdjustBrightness, handler: () => {}, isActive: "unset" }]
+
 interface ToolbarProps {
    editor: Editor
 }
 
 export default function ToolbarContents(props: ToolbarProps): JSX.Element {
-   console.log("Hello")
    return (
       <div class="p-2 flex space-x-1">
          <div class="flex space-x-1">
