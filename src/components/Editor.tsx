@@ -7,7 +7,7 @@ export type EditorSettingsTypes = {
    editable: boolean
 }
 
-const editorSettingsOptions = {
+export const editorSettingsOptions = {
    widths: [640, 768, 1024, 1280],
    bg: { transparent: "", distinct: "md:bg-white", elevated: "md:bg-white md:shadow-xl" },
    toolbar: {
@@ -18,7 +18,7 @@ const editorSettingsOptions = {
    },
 }
 
-const editorSettings: EditorSettingsTypes = {
+export const editorSettings: EditorSettingsTypes = {
    width: editorSettingsOptions.widths[1],
    bg: editorSettingsOptions.bg.transparent,
    toolbar: {

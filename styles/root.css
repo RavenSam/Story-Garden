@@ -20,6 +20,10 @@
       @apply h-12 w-12 text-2xl rounded-xl;
    }
 
+   .btn-icon-sm {
+      @apply h-9 w-9 text-base rounded-xl;
+   }
+
    .btn-solid-default {
       @apply bg-black text-white hover:bg-opacity-80 active:bg-black;
    }

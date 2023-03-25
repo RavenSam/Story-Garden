@@ -1,16 +1,9 @@
 import { For, createSignal, Show, JSXElement, onMount, createEffect, onCleanup } from "solid-js"
 import { A } from "solid-start"
 import { IconTypes } from "solid-icons"
-import {
-   TiHomeOutline,
-   TiCogOutline,
-   TiDocument,
-   TiUserOutline,
-   TiThLargeOutline,
-   TiChevronRight,
-   TiThMenu,
-} from "solid-icons/ti"
-import { HiOutlineMenuAlt2, HiSolidMenuAlt2 } from "solid-icons/hi"
+import { TiHomeOutline, TiDocument, TiUserOutline, TiThLargeOutline, TiChevronRight } from "solid-icons/ti"
+import { HiSolidMenuAlt2 } from "solid-icons/hi"
+import EditorSettingsModal from "~/components/flow/EditorSettings"
 
 type ListType = { name: string; icon: IconTypes; href: string; childrenList: { name: string; href: string }[] }
 
@@ -40,7 +33,6 @@ const navList: ListType[] = [
       ],
    },
    { name: "Characters", icon: TiUserOutline, href: "/", childrenList: [] },
-   { name: "Settings", icon: TiCogOutline, href: "/", childrenList: [] },
 ]
 
 const SideLink = ({ item }: { item: ListType }) => {
@@ -52,7 +44,7 @@ const SideLink = ({ item }: { item: ListType }) => {
    const toggleSubMenu = () => setOpenSubMenu((prev) => !prev)
 
    return (
-      <li class="relative">
+      <div class="relative">
          <div
             // onMouseEnter={() => hasChildren && !open() && setIsShown(true)}
             // onMouseLeave={() => hasChildren && !open() && setIsShown(false)}
@@ -94,7 +86,7 @@ const SideLink = ({ item }: { item: ListType }) => {
                </ul>
             </div>
          </Show> */}
-      </li>
+      </div>
    )
 }
 
@@ -144,11 +136,15 @@ export default function StorySideBar(props: SideBarProps) {
                "max-width": SIDENAV_MAX_WIDTH + "px",
                transform: mobileScreen() ? (open() ? "translateX(0)" : "translateX(-100%)") : "translateX(0)",
             }}
-            class="fixed left-0 top-0 bottom-0 bg-white p-2 transition-all z-50"
+            class="fixed left-0 top-0 bottom-0 bg-white p-2 transition-all z-20"
          >
-            <ul class="space-y-1 flex flex-col h-full mt-20">
+            <nav class="space-y-1 flex flex-col h-full pt-20">
                <For each={navList}>{(item) => <SideLink item={item} />}</For>
-            </ul>
+
+               <div class="!mt-auto">
+                  <EditorSettingsModal mobileScreen={mobileScreen} open={open} />
+               </div>
+            </nav>
 
             <button
                onClick={() => setOpen((prev) => !prev)}
