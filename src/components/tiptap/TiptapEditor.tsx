@@ -3,6 +3,7 @@ import StarterKit from "@tiptap/starter-kit"
 import BubbleMenu from "@tiptap/extension-bubble-menu"
 import Typography from "@tiptap/extension-typography"
 import Underline from "@tiptap/extension-underline"
+import TextAlign from "@tiptap/extension-text-align"
 import { createSignal, JSX, Show } from "solid-js"
 import { Toolbar } from "solid-headless"
 import FloatingToolbar from "./FloatingToolbar"
@@ -45,7 +46,13 @@ export default function TiptapEditor(): JSX.Element {
 
    const editor = createTiptapEditor(() => ({
       element: container()!,
-      extensions: [StarterKit, BubbleMenu.configure({ element: menu()! }), Typography, Underline],
+      extensions: [
+         StarterKit,
+         BubbleMenu.configure({ element: menu()! }),
+         Typography,
+         Underline,
+         TextAlign.configure({ types: ["heading", "paragraph"] }),
+      ],
       editorProps: {
          attributes: {
             class: "p-2 md:p-8 focus:outline-none prose max-w-full",

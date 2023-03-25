@@ -7,6 +7,7 @@ specifiers:
   '@tailwindcss/typography': ^0.5.9
   '@tiptap/core': 2.0.0-beta.220
   '@tiptap/extension-bubble-menu': 2.0.0-beta.220
+  '@tiptap/extension-text-align': 2.0.0-beta.220
   '@tiptap/extension-typography': 2.0.0-beta.220
   '@tiptap/extension-underline': 2.0.0-beta.220
   '@tiptap/pm': 2.0.0-beta.220
@@ -33,6 +34,7 @@ dependencies:
   '@solidjs/router': 0.8.1_solid-js@1.6.15
   '@tiptap/core': 2.0.0-beta.220_@tiptap+pm@2.0.0-beta.220
   '@tiptap/extension-bubble-menu': 2.0.0-beta.220_ohumfzynigfck3hzagxvh2a4ky
+  '@tiptap/extension-text-align': 2.0.0-beta.220_7w7m52asdh3tod4ocz57yex63q
   '@tiptap/extension-typography': 2.0.0-beta.220_7w7m52asdh3tod4ocz57yex63q
   '@tiptap/extension-underline': 2.0.0-beta.220_7w7m52asdh3tod4ocz57yex63q
   '@tiptap/pm': 2.0.0-beta.220_7w7m52asdh3tod4ocz57yex63q
@@ -1785,6 +1787,14 @@ packages:
 
   /@tiptap/extension-strike/2.0.0-beta.220_7w7m52asdh3tod4ocz57yex63q:
     resolution: {integrity: sha512-cIM2ma6mzk08pijOn+KS3ZoHWaUVsVT+OF3m6xewjwJdC0ILg9nApEOhPFrhbeDcxcPmJMlgBl/xeUrEu1HQMg==}
+    peerDependencies:
+      '@tiptap/core': ^2.0.0-beta.209
+    dependencies:
+      '@tiptap/core': 2.0.0-beta.220_@tiptap+pm@2.0.0-beta.220
+    dev: false
+
+  /@tiptap/extension-text-align/2.0.0-beta.220_7w7m52asdh3tod4ocz57yex63q:
+    resolution: {integrity: sha512-xUYhozdJA0UVLxlrxYLHLhwDYD5oDDiy0omAzFKAyRRtHAkNSPot7Vp7UJW2M0R6XHIQDMFEopxKQNJMBTRk3w==}
     peerDependencies:
       '@tiptap/core': ^2.0.0-beta.209
     dependencies:

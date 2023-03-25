@@ -4,8 +4,68 @@
 
 @layer components {
    .btn {
-      @apply border-none text-center flex items-center justify-center cursor-pointer outline-none disabled:opacity-30 disabled:pointer-events-none 
+      @apply space-x-2 focus-visible:outline-none shrink-0 relative  transition-all font-semibold border-none text-center flex items-center justify-center cursor-pointer outline-none disabled:opacity-30 disabled:pointer-events-none 
       after:rounded-xl after:outline after:outline-emerald-500 after:outline-offset-4 focus-visible:after:block;
+   }
+
+   .btn-pill {
+      @apply rounded-full after:rounded-full px-6 py-2;
+   }
+
+   .btn-rect {
+      @apply rounded-xl px-6 py-2;
+   }
+
+   .btn-icon {
+      @apply h-12 w-12 text-2xl rounded-xl;
+   }
+
+   .btn-solid-default {
+      @apply bg-black text-white hover:bg-opacity-80 active:bg-black;
+   }
+
+   .btn-solid-primary {
+      @apply bg-emerald-600 text-white hover:bg-emerald-500 active:bg-emerald-700;
+   }
+
+   .btn-solid-danger {
+      @apply bg-red-600 text-white hover:bg-red-500 active:bg-red-700;
+   }
+
+   .btn-solid-warning {
+      @apply bg-orange-600 text-white hover:bg-orange-500 active:bg-orange-700;
+   }
+
+   .btn-outline-default {
+      @apply border border-solid bg-transparent border-black text-gray-700 hover:text-black hover:bg-slate-100 active:bg-slate-200;
+   }
+
+   .btn-outline-primary {
+      @apply border border-solid bg-transparent border-emerald-500 text-emerald-500 hover:bg-emerald-100 active:bg-emerald-200;
+   }
+
+   .btn-outline-danger {
+      @apply border border-solid bg-transparent border-red-600 text-red-600 hover:bg-red-100 active:bg-red-200;
+   }
+
+   .btn-outline-warning {
+      @apply border border-solid bg-transparent border-orange-500 text-orange-500 hover:bg-orange-100 active:bg-orange-200;
+   }
+
+   .btn-ghost-default {
+      @apply bg-transparent text-gray-700 focus:text-black focus:bg-slate-200 hover:text-black hover:bg-slate-200 active:bg-slate-300;
+   }
+
+   .btn-ghost-primary {
+      @apply bg-transparent text-emerald-600 hover:bg-emerald-200 active:bg-emerald-300;
+   }
+
+   .btn-ghost-danger {
+      @apply bg-transparent text-red-600 hover:bg-red-200 active:bg-red-300;
+   }
+
+   .btn-ghost-warning {
+      @apply bg-transparent text-orange-500 hover:bg-orange-200 active:bg-orange-300;
    }
 }
 

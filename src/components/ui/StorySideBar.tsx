@@ -10,6 +10,7 @@ import {
    TiChevronRight,
    TiThMenu,
 } from "solid-icons/ti"
+import { HiOutlineMenuAlt2, HiSolidMenuAlt2 } from "solid-icons/hi"
 
 type ListType = { name: string; icon: IconTypes; href: string; childrenList: { name: string; href: string }[] }
 
@@ -143,7 +144,7 @@ export default function StorySideBar(props: SideBarProps) {
                "max-width": SIDENAV_MAX_WIDTH + "px",
                transform: mobileScreen() ? (open() ? "translateX(0)" : "translateX(-100%)") : "translateX(0)",
             }}
-            class="fixed left-0 top-0 bottom-0 bg-white p-2 transition-all z-10"
+            class="fixed left-0 top-0 bottom-0 bg-white p-2 transition-all z-50"
          >
             <ul class="space-y-1 flex flex-col h-full mt-20">
                <For each={navList}>{(item) => <SideLink item={item} />}</For>
@@ -153,7 +154,7 @@ export default function StorySideBar(props: SideBarProps) {
                onClick={() => setOpen((prev) => !prev)}
                class="absolute top-0 right-0 translate-x-full text-xl p-2 rounded-xl text-slate-700 hover:text-black"
             >
-               <TiThMenu />
+               <HiSolidMenuAlt2 class="text-2xl" />
             </button>
          </div>
 

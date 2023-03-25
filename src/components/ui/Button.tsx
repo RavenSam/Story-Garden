@@ -67,7 +67,7 @@ export default function Button(props: ButtonProps) {
    let variant = merged.variant && VARIANTS.includes(merged.variant) ? merged.variant : "solid"
    let scheme = merged.colorScheme && SCHEMES.includes(merged.colorScheme) ? merged.colorScheme : "default"
 
-   const BtnClass = `${merged.class} ${btnTypeClass} ${colorVariant[variant][scheme]} space-x-2 focus-visible:outline-none btn shrink-0 relative group transition-all font-semibold`
+   const BtnClass = `${merged.class} ${btnTypeClass} ${colorVariant[variant][scheme]} btn group`
 
    if (merged.href) {
       return (

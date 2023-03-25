@@ -1,4 +1,4 @@
-import { For, JSX } from "solid-js"
+import { createEffect, createMemo, createSignal, For, JSX, on, Show } from "solid-js"
 import {
    BiRegularUndo,
    BiRegularRedo,
@@ -20,24 +20,29 @@ import {
 import { RiEditorH1, RiEditorH2, RiEditorDoubleQuotesR } from "solid-icons/ri"
 import { MenuItem, Toggle } from "solid-headless"
 import { unstable_clientOnly } from "solid-start"
-import Button from "../ui/Button"
 import { Editor } from "@tiptap/core"
-import { createEditorTransaction } from "solid-tiptap"
+import { createEditorTransaction, useEditorIsActive } from "solid-tiptap"
+import { IconTypes } from "solid-icons"
 const Dropdown = unstable_clientOnly(() => import("~/components/ui/Dropdown"))
 
-const ButtonFallback = () => (
-   <Button btnType="rect" variant="ghost">
-      Loading...
-   </Button>
-)
+const ButtonFallback = () => <button class="btn btn-ghost-default btn-rect">Loading...</button>
 
 function Divider() {
    return (
-      <div class="flex items-center" aria-hidden="true">
-         <div class="h-5 w-1  border-l border-slate-300 mx-4 md:mx-8" />
+      <div class="hidden md:flex items-center" aria-hidden="true">
+         <div class="h-5 w-1  border-l border-slate-300 mx-auto" />
       </div>
    )
 }
+
+const BtnChildren = (props: { icon: IconTypes; label?: string }) => (
+   <>
+      <props.icon class="text-xl" />
+      <Show when={props.label}>
+         <span class="text-sm">{props.label}</span>
+      </Show>
+   </>
+)
 
 interface ControlProps {
    class?: string
@@ -63,7 +68,7 @@ function Control(props: ControlProps): JSX.Element {
    return (
       <Toggle
          defaultPressed={false}
-         class={`${props.class} h-12 w-12 text-2xl rounded-xl bg-transparent text-gray-700 hover:text-black hover:bg-slate-200 active:bg-slate-300 space-x-2 focus-visible:outline-none btn shrink-0 relative group transition-all font-semibold`}
+         class={`${props.class} btn btn-ghost-default btn-icon`}
          classList={{ "!text-emerald-500 !bg-emerald-100": flag() }}
          title={props.title}
          onChange={props.onChange}
@@ -73,51 +78,85 @@ function Control(props: ControlProps): JSX.Element {
    )
 }
 
-const BlockOptions = () => {
+type OptionTypes = {
+   name: string
+   label: string
+   attr?: { level: number }
+   icon: IconTypes
+   handler?: () => boolean
+}
+
+const BlockOptions = (props: { editor: Editor }) => {
    const blockOptions = [
       {
-         blockType: "paragraph",
+         name: "paragraph",
          label: "Normal",
          icon: BiRegularText,
-         handler: () => {},
+         handler: () => props.editor.chain().focus().setParagraph().run(),
       },
       {
-         blockType: "h1",
-         label: "Large Heading",
+         name: "heading",
+         attr: { level: 1 },
+         label: "Large",
          icon: RiEditorH1,
-         handler: () => {},
+         handler: () => props.editor.chain().focus().setHeading({ level: 1 }).run(),
       },
       {
-         blockType: "h2",
-         label: "Small Heading",
+         name: "heading",
+         attr: { level: 2 },
+         label: "Small",
          icon: RiEditorH2,
-         handler: () => {},
+         handler: () => props.editor.chain().focus().setHeading({ level: 2 }).run(),
       },
       {
-         blockType: "ul",
-         label: "Bullet List",
+         name: "bulletList",
+         label: "Bullet",
          icon: BiRegularListUl,
-         handler: () => {},
+         handler: () => props.editor.chain().focus().toggleBulletList().run(),
       },
       {
-         blockType: "ol",
-         label: "Numbered List",
+         name: "orderedList",
+         label: "Numbered",
          icon: BiRegularListOl,
-         handler: () => {},
+         handler: () => props.editor.chain().focus().toggleOrderedList().run(),
       },
-      { blockType: "quote", label: "Quote", icon: RiEditorDoubleQuotesR, handler: () => {} },
-      { blockType: "Code", label: "Code Block", icon: BiRegularCodeBlock, handler: () => {} },
+      {
+         name: "blockquote",
+         label: "Quote",
+         icon: RiEditorDoubleQuotesR,
+         handler: () => props.editor.chain().focus().toggleBlockquote().run(),
+      },
+      {
+         name: "codeBlock",
+         label: "Code",
+         icon: BiRegularCodeBlock,
+         handler: () => props.editor.chain().focus().toggleCodeBlock().run(),
+      },
    ]
 
+   const [activeOption, setActiveOption] = createSignal<OptionTypes>(blockOptions[0])
+
+   const isActive = (name: string, attr?: {} | undefined) => props.editor.isActive(name, attr)
+
    return (
-      <Dropdown fallback={ButtonFallback} chevron>
+      <Dropdown
+         btnChildren={<BtnChildren icon={activeOption().icon} label={activeOption().label} />}
+         btnClass="bg-slate-200"
+         fallback={ButtonFallback}
+      >
          <For each={blockOptions}>
             {(option) => (
                <MenuItem
+                  onclick={() => {
+                     option.handler()
+                     setActiveOption(option)
+                  }}
                   as="button"
-                  class="text-sm p-1 text-left rounded hover:bg-purple-600 hover:text-white focus:outline-none focus:bg-purple-600 focus:text-white"
+                  class="btn btn-ghost-default btn-rect justify-start"
+                  classList={{ "!bg-emerald-100 !text-emerald-500": isActive(option.name, option.attr) }}
                >
-                  {option.label}
+                  <option.icon class="text-xl" />
+                  <span class="text-sm">{option.label}</span>
                </MenuItem>
             )}
          </For>
@@ -125,39 +164,53 @@ const BlockOptions = () => {
    )
 }
 
-const AlignOptions = () => {
+const AlignOptions = (props: { editor: Editor }) => {
    const formatAlignItems = [
       {
+         name: "left",
          label: "Left Align",
          icon: BiRegularAlignLeft,
-         handler: () => {},
       },
       {
+         name: "center",
          label: "Center Align",
          icon: BiRegularAlignMiddle,
-         handler: () => {},
       },
       {
+         name: "right",
          label: "Right Align",
          icon: BiRegularAlignRight,
-         handler: () => {},
       },
       {
+         name: "justify",
          label: "Justify Align",
          icon: BiRegularAlignJustify,
-         handler: () => {},
       },
    ]
 
+   const [activeOption, setActiveOption] = createSignal<OptionTypes>(formatAlignItems[0])
+
+   const isActive = (name: string) => props.editor.isActive({ textAlign: name })
+
    return (
-      <Dropdown fallback={ButtonFallback}>
+      <Dropdown
+         btnLabel={activeOption().label}
+         btnChildren={<BtnChildren icon={activeOption().icon} />}
+         btnClass="bg-slate-200"
+         fallback={ButtonFallback}
+      >
          <For each={formatAlignItems}>
             {(option) => (
                <MenuItem
+                  onclick={() => {
+                     props.editor.chain().focus().setTextAlign(option.name).run()
+                     setActiveOption(option)
+                  }}
                   as="button"
-                  class="text-sm p-1 text-left rounded hover:bg-purple-600 hover:text-white focus:outline-none focus:bg-purple-600 focus:text-white"
+                  class="btn btn-ghost-default btn-icon"
+                  classList={{ "!bg-emerald-100 !text-emerald-500": isActive(option.name) }}
                >
-                  {option.label}
+                  <option.icon class="text-xl" />
                </MenuItem>
             )}
          </For>
@@ -170,20 +223,15 @@ interface ToolbarProps {
 }
 
 export default function FixedToolbar(props: ToolbarProps) {
-   const undoRedoItems = [
-      {
-         label: "Undo",
-         icon: BiRegularUndo,
-         handler: () => {},
-         disabled: false,
-      },
-      {
-         label: "Redo",
-         icon: BiRegularRedo,
-         handler: () => {},
-         disabled: false,
-      },
-   ]
+   const canUndo = createEditorTransaction(
+      () => props.editor,
+      (instance) => instance.can().undo()
+   )
+
+   const canRedo = createEditorTransaction(
+      () => props.editor,
+      (instance) => instance.can().redo()
+   )
 
    const formatTextItems = [
       {
@@ -226,38 +274,46 @@ export default function FixedToolbar(props: ToolbarProps) {
 
    return (
       <div class=" w-full rounded-xl">
-         <div class="flex items-center justify-between">
-            <For each={undoRedoItems}>
-               {(item) => (
-                  <Button
-                     variant="ghost"
-                     btnType="icon"
-                     disabled={item.disabled}
-                     onClick={item.handler}
-                     label={item.label}
-                  >
-                     <item.icon />
-                  </Button>
-               )}
-            </For>
+         <div class="flex items-center justify-center sm:justify-between flex-wrap mx-auto w-fit md:w-full">
+            <button
+               class="btn btn-ghost-default btn-icon"
+               aria-label="Undo"
+               title="Undo"
+               disabled={!canUndo()}
+               onclick={() => props.editor.chain().focus().undo().run()}
+            >
+               <BiRegularUndo />
+            </button>
+
+            <button
+               class="btn btn-ghost-default btn-icon"
+               aria-label="Redo"
+               title="Redo"
+               disabled={!canRedo()}
+               onclick={() => props.editor.chain().focus().redo().run()}
+            >
+               <BiRegularRedo />
+            </button>
 
             <Divider />
 
-            <BlockOptions />
+            <BlockOptions editor={props.editor} />
 
             <Divider />
 
-            <For each={formatTextItems}>
-               {(item) => (
-                  <Control key={item.key} editor={props.editor} onChange={item.handler} title="Bold">
-                     <item.icon />
-                  </Control>
-               )}
-            </For>
+            <div class="flex items-center ">
+               <For each={formatTextItems}>
+                  {(item) => (
+                     <Control key={item.key} editor={props.editor} onChange={item.handler} title={item.title}>
+                        <item.icon />
+                     </Control>
+                  )}
+               </For>
+            </div>
 
             <Divider />
 
-            <AlignOptions />
+            <AlignOptions editor={props.editor} />
          </div>
       </div>
    )
