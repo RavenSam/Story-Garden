@@ -141,7 +141,8 @@ const BlockOptions = (props: { editor: Editor }) => {
    return (
       <Dropdown
          btnChildren={<BtnChildren icon={activeOption().icon} label={activeOption().label} />}
-         btnClass="bg-slate-200"
+         btnClass="bg-slate-100"
+         menuClass="bg-white/80 backdrop-blur-sm"
          fallback={ButtonFallback}
       >
          <For each={blockOptions}>
@@ -196,7 +197,8 @@ const AlignOptions = (props: { editor: Editor }) => {
       <Dropdown
          btnLabel={activeOption().label}
          btnChildren={<BtnChildren icon={activeOption().icon} />}
-         btnClass="bg-slate-200"
+         btnClass="bg-slate-100"
+         menuClass="bg-white/80 backdrop-blur-sm"
          fallback={ButtonFallback}
       >
          <For each={formatAlignItems}>

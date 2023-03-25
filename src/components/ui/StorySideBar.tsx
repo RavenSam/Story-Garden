@@ -158,10 +158,7 @@ export default function StorySideBar(props: SideBarProps) {
             </button>
          </div>
 
-         <div
-            style={{ "margin-left": mobileScreen() ? 0 : sideNavWidth() + "px" }}
-            class="overflow-scroll transition-[margin]"
-         >
+         <div style={{ "margin-left": mobileScreen() ? 0 : sideNavWidth() + "px" }} class="transition-[margin]">
             {props.children}
          </div>
       </>

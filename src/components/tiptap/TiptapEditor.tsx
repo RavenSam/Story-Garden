@@ -8,6 +8,7 @@ import { createSignal, JSX, Show } from "solid-js"
 import { Toolbar } from "solid-headless"
 import FloatingToolbar from "./FloatingToolbar"
 import FixedToolbar from "./FixedToolbar"
+import { EditorSettingsTypes } from "../Editor"
 
 const CONTENT = `
   <h2>
@@ -33,6 +34,24 @@ const CONTENT = `
   <p>
   I know, I know, this is impressive. It’s only the tip of the iceberg though. Give it a try and click a little bit around. Don’t forget to check the other examples too.
   </p>
+  <p>
+  Isn’t that great? And all of that is editable. But wait, there’s more. Let’s try a code block:
+  </p>
+  <pre><code class="language-css">body {
+    display: none;
+  }</code></pre>
+  <p>
+  I know, I know, this is impressive. It’s only the tip of the iceberg though. Give it a try and click a little bit around. Don’t forget to check the other examples too.
+  </p>
+  <p>
+  Isn’t that great? And all of that is editable. But wait, there’s more. Let’s try a code block:
+  </p>
+  <pre><code class="language-css">body {
+    display: none;
+  }</code></pre>
+  <p>
+  I know, I know, this is impressive. It’s only the tip of the iceberg though. Give it a try and click a little bit around. Don’t forget to check the other examples too.
+  </p>
   <blockquote>
   Wow, that’s amazing. Good work, boy! 👏
   <br />
@@ -40,7 +59,11 @@ const CONTENT = `
   </blockquote>    
   `
 
-export default function TiptapEditor(): JSX.Element {
+interface TipEditorProps {
+   editorSettings: EditorSettingsTypes
+}
+
+export default function TiptapEditor(props: TipEditorProps): JSX.Element {
    const [container, setContainer] = createSignal<HTMLDivElement>()
    const [menu, setMenu] = createSignal<HTMLDivElement>()
 
@@ -48,7 +71,7 @@ export default function TiptapEditor(): JSX.Element {
       element: container()!,
       extensions: [
          StarterKit,
-         BubbleMenu.configure({ element: menu()! }),
+         BubbleMenu.configure({ element: menu()!, tippyOptions: { placement: "bottom" } }),
          Typography,
          Underline,
          TextAlign.configure({ types: ["heading", "paragraph"] }),
@@ -63,18 +86,20 @@ export default function TiptapEditor(): JSX.Element {
 
    return (
       <>
-         <Toolbar ref={setMenu} class="shadow bg-white  rounded-xl" horizontal>
+         <Toolbar ref={setMenu} class="shadow bg-white/70 backdrop-blur-sm  rounded-xl" horizontal>
             <Show when={editor()} keyed>
                {(instance) => <FloatingToolbar editor={instance} />}
             </Show>
          </Toolbar>
 
-         <div class="relative">
-            <Show when={editor()} keyed>
-               {(instance) => <FixedToolbar editor={instance} />}
-            </Show>
+         <div class={`${props.editorSettings.toolbar.position}  relative`}>
+            <div class="FixedToolbar sticky w-full bg-white/70 backdrop-blur-sm shadow-sm z-10 p-2 rounded-xl">
+               <Show when={editor()} keyed>
+                  {(instance) => <FixedToolbar editor={instance} />}
+               </Show>
+            </div>
 
-            <div class="min-h-[80vh] overflow-y-scroll" ref={setContainer} />
+            <div class="min-h-[80vh]" ref={setContainer} />
          </div>
       </>
    )

@@ -111,3 +111,29 @@
 .prose ol > li > ol > li > ol {
    list-style-type: upper-roman;
 }
+
+/* +++++++++++++++Dynamic positioning of FixedToolbar+++++++++++++++ */
+/* "tollbar-sticky-top",
+         bottom: "tollbar-sticky-bottom", */
+
+.tollbar-sticky-top {
+   display: flex;
+   flex-direction: column;
+}
+
+.tollbar-sticky-top .FixedToolbar {
+   top: 0.5rem;
+}
+
+.tollbar-sticky-bottom {
+   display: flex;
+   flex-direction: column-reverse;
+}
+
+.FixedToolbar {
+   bottom: 0.5rem;
+}
+
+.tollbar-sticky-bottom .dropdown {
+   bottom: 3.5rem;
+}

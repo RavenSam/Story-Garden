@@ -7,6 +7,7 @@ interface DropdownProps {
    btnChildren?: JSXElement
    btnClass?: string
    btnLabel?: string
+   menuClass?: string
    chevron?: boolean
 }
 
@@ -43,10 +44,11 @@ export default function Dropdown(props: DropdownProps): JSX.Element {
                   >
                      <PopoverPanel
                         unmount={false}
-                        class="absolute z-10 px-4 mt-3 transform -translate-x-1/2 left-1/2 sm:px-0 lg:max-w-3xl"
-                        classList={{}}
+                        class="dropdown absolute z-10 px-4 mt-3 transform -translate-x-1/2 left-1/2 sm:px-0 lg:max-w-3xl"
                      >
-                        <Menu class="min-w-max rounded-xl shadow-lg ring-1 ring-black ring-opacity-5 bg-white flex flex-col space-y-1 p-1">
+                        <Menu
+                           class={`${merged.menuClass} min-w-max rounded-xl shadow-lg ring-1 ring-black ring-opacity-5 bg-white flex flex-col space-y-1 p-1`}
+                        >
                            {merged.children}
                         </Menu>
                      </PopoverPanel>
