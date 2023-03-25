@@ -275,25 +275,27 @@ export default function FixedToolbar(props: ToolbarProps) {
    return (
       <div class=" w-full rounded-xl">
          <div class="flex items-center justify-center sm:justify-between flex-wrap mx-auto w-fit md:w-full">
-            <button
-               class="btn btn-ghost-default btn-icon"
-               aria-label="Undo"
-               title="Undo"
-               disabled={!canUndo()}
-               onclick={() => props.editor.chain().focus().undo().run()}
-            >
-               <BiRegularUndo />
-            </button>
+            <div class="flex items-center ">
+               <button
+                  class="btn btn-ghost-default btn-icon"
+                  aria-label="Undo"
+                  title="Undo"
+                  disabled={!canUndo()}
+                  onclick={() => props.editor.chain().focus().undo().run()}
+               >
+                  <BiRegularUndo />
+               </button>
 
-            <button
-               class="btn btn-ghost-default btn-icon"
-               aria-label="Redo"
-               title="Redo"
-               disabled={!canRedo()}
-               onclick={() => props.editor.chain().focus().redo().run()}
-            >
-               <BiRegularRedo />
-            </button>
+               <button
+                  class="btn btn-ghost-default btn-icon"
+                  aria-label="Redo"
+                  title="Redo"
+                  disabled={!canRedo()}
+                  onclick={() => props.editor.chain().focus().redo().run()}
+               >
+                  <BiRegularRedo />
+               </button>
+            </div>
 
             <Divider />
 

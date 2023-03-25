@@ -14,6 +14,7 @@ const editorSettings = {
    toolbar: {
       position: "top",
    },
+   editable: true,
 }
 
 export default function Editor() {
