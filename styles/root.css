@@ -16,6 +16,10 @@
       @apply rounded-xl px-6 py-2;
    }
 
+   .btn-rect-sm {
+      @apply rounded-xl text-base px-4 py-2;
+   }
+
    .btn-icon {
       @apply h-12 w-12 text-2xl rounded-xl;
    }
@@ -139,5 +143,5 @@
 }
 
 .tollbar-sticky-bottom .dropdown {
-   bottom: 3.5rem;
+   bottom: 3rem;
 }

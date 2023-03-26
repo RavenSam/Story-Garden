@@ -1,39 +1,51 @@
+import { createSignal, onMount } from "solid-js"
 import TiptapEditor from "./tiptap/TiptapEditor"
 
 export type EditorSettingsTypes = {
    width: number
    bg: string
-   toolbar: { position: string }
+   toolbar_position: string
    editable: boolean
 }
 
 export const editorSettingsOptions = {
    widths: [640, 768, 1024, 1280],
-   bg: { transparent: "", distinct: "md:bg-white", elevated: "md:bg-white md:shadow-xl" },
-   toolbar: {
-      position: {
-         top: "tollbar-sticky-top",
-         bottom: "tollbar-sticky-bottom",
-      },
+   bg: { transparent: "", distinct: "md:bg-white", elevated: "md:bg-white md:shadow-56" },
+   toolbar_position: {
+      top: "tollbar-sticky-top",
+      bottom: "tollbar-sticky-bottom",
    },
 }
 
-export const editorSettings: EditorSettingsTypes = {
+export const editorSettingsDefault: EditorSettingsTypes = {
    width: editorSettingsOptions.widths[1],
    bg: editorSettingsOptions.bg.transparent,
-   toolbar: {
-      position: editorSettingsOptions.toolbar.position.top,
-   },
+   toolbar_position: editorSettingsOptions.toolbar_position.top,
    editable: true,
 }
 
+export const [editorSettings, setEditorSettings] = createSignal<EditorSettingsTypes>()
+
 export default function Editor() {
+   onMount(() => {
+      if (typeof window !== "undefined") {
+         const isStored = window.localStorage.getItem("editorSettings")
+
+         if (isStored) {
+            setEditorSettings(JSON.parse(isStored))
+         } else {
+            window.localStorage.setItem("editorSettings", JSON.stringify(editorSettingsDefault))
+            setEditorSettings(editorSettingsDefault)
+         }
+      }
+   })
+
    return (
       <div
-         style={{ "max-width": editorSettings.width + "px" }}
-         class={`mx-auto w-full rounded-xl ${editorSettings.bg}`}
+         style={{ "max-width": editorSettings()?.width + "px" }}
+         class={`mx-auto w-full rounded-xl ${editorSettings()?.bg}`}
       >
-         <TiptapEditor editorSettings={editorSettings} />
+         <TiptapEditor editorSettings={editorSettings() || editorSettingsDefault} />
       </div>
    )
 }

@@ -15,6 +15,16 @@ module.exports = {
                },
             },
          }),
+
+         boxShadow: {
+            1: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
+            5: " rgba(0, 0, 0, 0.24) 0px 3px 8px",
+            6: " rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+            8: "rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px",
+            33: "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px",
+            56: "rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px",
+            85: "rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset",
+         },
       },
    },
    plugins: [require("@tailwindcss/typography")],

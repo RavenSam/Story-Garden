@@ -25,7 +25,7 @@ import { createEditorTransaction, useEditorIsActive } from "solid-tiptap"
 import { IconTypes } from "solid-icons"
 const Dropdown = unstable_clientOnly(() => import("~/components/ui/Dropdown"))
 
-const ButtonFallback = () => <button class="btn btn-ghost-default btn-rect">Loading...</button>
+const ButtonFallback = () => <button class="btn btn-ghost-default btn-rect-sm md:btn-rect">Loading...</button>
 
 function Divider() {
    return (
@@ -68,7 +68,7 @@ function Control(props: ControlProps): JSX.Element {
    return (
       <Toggle
          defaultPressed={false}
-         class={`${props.class} btn btn-ghost-default btn-icon`}
+         class={`${props.class} btn btn-ghost-default btn-icon-sm md:btn-icon`}
          classList={{ "!text-emerald-500 !bg-emerald-100": flag() }}
          title={props.title}
          onChange={props.onChange}
@@ -153,11 +153,11 @@ const BlockOptions = (props: { editor: Editor }) => {
                      setActiveOption(option)
                   }}
                   as="button"
-                  class="btn btn-ghost-default btn-rect justify-start"
+                  class="btn btn-ghost-default btn-rect-sm md:btn-rect justify-start"
                   classList={{ "!bg-emerald-100 !text-emerald-500": isActive(option.name, option.attr) }}
                >
                   <option.icon class="text-xl" />
-                  <span class="text-sm">{option.label}</span>
+                  <span class="!text-sm font-medium">{option.label}</span>
                </MenuItem>
             )}
          </For>
@@ -209,7 +209,7 @@ const AlignOptions = (props: { editor: Editor }) => {
                      setActiveOption(option)
                   }}
                   as="button"
-                  class="btn btn-ghost-default btn-icon"
+                  class="btn btn-ghost-default btn-icon-sm md:btn-icon"
                   classList={{ "!bg-emerald-100 !text-emerald-500": isActive(option.name) }}
                >
                   <option.icon class="text-xl" />
@@ -279,7 +279,7 @@ export default function FixedToolbar(props: ToolbarProps) {
          <div class="flex items-center justify-center sm:justify-between flex-wrap mx-auto w-fit md:w-full">
             <div class="flex items-center ">
                <button
-                  class="btn btn-ghost-default btn-icon"
+                  class="btn btn-ghost-default btn-icon-sm md:btn-icon"
                   aria-label="Undo"
                   title="Undo"
                   disabled={!canUndo()}
@@ -289,7 +289,7 @@ export default function FixedToolbar(props: ToolbarProps) {
                </button>
 
                <button
-                  class="btn btn-ghost-default btn-icon"
+                  class="btn btn-ghost-default btn-icon-sm md:btn-icon"
                   aria-label="Redo"
                   title="Redo"
                   disabled={!canRedo()}

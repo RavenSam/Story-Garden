@@ -21,7 +21,7 @@ export default function Dropdown(props: DropdownProps): JSX.Element {
                <>
                   <PopoverButton
                      aria-label={merged.btnLabel || "Action"}
-                     class={`${merged.btnClass} btn btn-ghost-default btn-rect`}
+                     class={`${merged.btnClass} btn btn-ghost-default btn-rect-sm md:btn-rect`}
                   >
                      <Show when={merged.btnChildren} fallback={<span>Action</span>}>
                         {merged.btnChildren}
