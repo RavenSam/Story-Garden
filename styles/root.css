@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+   .box {
+      background-image: url(/img/g-1.jpg);
+      color: white;
+      clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+   }
+
+   .parent {
+      overflow: hidden;
+      filter: url("#goo");
+   }
+}
+
 @layer components {
    .btn {
       @apply space-x-2 focus-visible:outline-none shrink-0 relative  transition-all font-semibold border-none text-center flex items-center justify-center cursor-pointer outline-none disabled:opacity-30 disabled:pointer-events-none 

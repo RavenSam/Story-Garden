@@ -44,7 +44,7 @@ const RadiosCards = (props: RadioProps) => {
       <div class="mt-4">
          <h3 class="text-base font-medium text-gray-800">{props.title}</h3>
 
-         <div style={{ "grid-template-columns": `repeat(${props.col}, minmax(0, 1fr)` }} class="grid gap-2 mt-2">
+         <fieldset style={{ "grid-template-columns": `repeat(${props.col}, minmax(0, 1fr)` }} class="grid gap-2 mt-2">
             <For each={props.each}>
                {(el) => (
                   <label
@@ -73,7 +73,7 @@ const RadiosCards = (props: RadioProps) => {
                   </label>
                )}
             </For>
-         </div>
+         </fieldset>
       </div>
    )
 }
