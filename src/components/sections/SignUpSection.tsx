@@ -57,7 +57,7 @@ export default function SignUpSection(props: SignUpProps) {
                         not in <span class="text-emerald-500 ">storing</span> them.
                      </h2>
                      <p class="text-xl text-slate-100 font-medium pb-20 [text-shadow:_0_1px_0_rgb(0_0_0_/_40%)]">
-                        Leave that to the machines.
+                        Leave that to us.
                      </p>
                   </div>
                </div>

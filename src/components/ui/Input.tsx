@@ -31,7 +31,7 @@ export default function Input(props: TextInputProps) {
                      {local.label || field.props.name}
                   </label>
                   <input
-                     class={`w-full px-3  py-3 text-slate-800 bg-white/50 focus:bg-white/50 hover:bg-slate-100 placeholder-slate-500 outline-none text-base font-light rounded-xl`}
+                     class={`w-full px-3  py-3 text-slate-800 bg-white/50 focus:bg-white/50 hover:bg-emerald-100 placeholder-slate-500 outline-none text-base font-light rounded-xl`}
                      classList={{ "pr-10": local.type === "password" }}
                      type={local.type === "password" ? (showPW() ? "text" : "password") : local.type}
                      {...field.props}

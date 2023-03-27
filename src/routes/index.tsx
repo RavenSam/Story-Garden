@@ -1,4 +1,14 @@
 import Input from "~/components/ui/Input"
+import { createServerData$, redirect } from "solid-start/server"
+
+export function routeData() {
+   return createServerData$(async (_, { request }) => {
+    
+         throw redirect("/sign-up")
+    
+      return {}
+   })
+}
 
 export default function Home() {
    return (
