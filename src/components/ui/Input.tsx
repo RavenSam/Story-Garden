@@ -21,7 +21,7 @@ export default function Input(props: TextInputProps) {
                   class={`border relative rounded-xl transition duration-150 ease-in-out ${
                      field.helpers.error
                         ? " focus-within:border-red-500 border-red-500"
-                        : "focus-within:border-emerald-500 border-slate-200"
+                        : "focus-within:border-emerald-500 border-slate-300"
                   }`}
                >
                   <label
@@ -31,7 +31,7 @@ export default function Input(props: TextInputProps) {
                      {local.label || field.props.name}
                   </label>
                   <input
-                     class={`w-full px-3  py-3 text-slate-800 bg-white/50 focus:bg-white/50 hover:bg-slate-100 placeholder-slate-600 outline-none text-base font-light rounded-xl`}
+                     class={`w-full px-3  py-3 text-slate-800 bg-white/50 focus:bg-white/50 hover:bg-slate-100 placeholder-slate-500 outline-none text-base font-light rounded-xl`}
                      classList={{ "pr-10": local.type === "password" }}
                      type={local.type === "password" ? (showPW() ? "text" : "password") : local.type}
                      {...field.props}

@@ -6,7 +6,7 @@ import { useFormHandler } from "solid-form-handler"
 import { zodSchema } from "solid-form-handler/zod"
 import { z } from "zod"
 
-type LoggingInTypes = {
+type SigningInTpes = {
    pending: boolean
    input?: FormData | undefined
    result?: Response | undefined
@@ -15,23 +15,27 @@ type LoggingInTypes = {
    retry: () => void
 }
 
-interface LoginProps {
-   loggingIn: LoggingInTypes
+interface SignUpProps {
+   signingIn: SigningInTpes
    Form: ParentComponent<FormProps>
 }
 
 export const userSchema = z.object({
-   email: z.string().nonempty("Your email is required.").email({ message: "Must be a valid email." }),
+   penName: z
+      .string()
+      .nonempty("A pen name is required.")
+      .min(3, { message: "Your pen name must be at least 3 characters long." }),
+   email: z.string().nonempty("Email is required.").email({ message: "Must be a valid email." }),
    password: z.string().nonempty("A password is required.").min(8, { message: "Too short." }),
 })
 
-export default function LoginSection(props: LoginProps) {
+export default function SignUpSection(props: SignUpProps) {
    const formHandler = useFormHandler(zodSchema(userSchema), { validateOn: ["blur"] })
    const params = useParams()
 
    createEffect(() => {
-      if (props.loggingIn?.error?.message) {
-         toast.error(props.loggingIn?.error?.message, { className: "error" })
+      if (props.signingIn?.error?.message) {
+         toast.error(props.signingIn?.error?.message, { className: "error" })
       }
    })
 
@@ -49,10 +53,11 @@ export default function LoginSection(props: LoginProps) {
                <div class="absolute inset-0 z-[9] flex items-center p-8 text-white bg-black/50">
                   <div class="space-y-4">
                      <h2 class="text-5xl font-extrabold [text-shadow:_0_1px_0_rgb(0_0_0_/60%)]">
-                        <span class="text-emerald-500 ">Welcome</span> back!
+                        The brain's strength <br /> lies in <span class="text-emerald-500 ">making</span> ideas, <br />
+                        not in <span class="text-emerald-500 ">storing</span> them.
                      </h2>
                      <p class="text-xl text-slate-100 font-medium pb-20 [text-shadow:_0_1px_0_rgb(0_0_0_/_40%)]">
-                        Ready to write? It's about time.
+                        Leave that to the machines.
                      </p>
                   </div>
                </div>
@@ -60,10 +65,12 @@ export default function LoginSection(props: LoginProps) {
 
             <div class="relative z-10 bg-white/60 shadow-5 md:shadow-none backdrop-blur-sm rounded-xl max-w-md w-full mx-auto px-4 py-6">
                <h1 class="text-3xl font-extrabold py-5">
-                  Login<span class="text-emerald-500">.</span>
+                  Sign up<span class="text-emerald-500">.</span>
                </h1>
                <props.Form class="space-y-8" autocomplete="off">
                   <input type="hidden" autofocus name="redirectTo" value={params.redirectTo ?? "/"} />
+
+                  <Input formHandler={formHandler} name="penName" label="Pen Name" placeholder="RicKol" />
 
                   <Input formHandler={formHandler} name="email" placeholder="kody66@mail.com" />
 
@@ -72,9 +79,9 @@ export default function LoginSection(props: LoginProps) {
                   <button
                      type="submit"
                      class="btn btn-solid-primary btn-pill min-w-[8rem] py-2.5 mx-auto"
-                     disabled={formHandler.isFormInvalid() || props.loggingIn.pending}
+                     disabled={formHandler.isFormInvalid() || props.signingIn.pending}
                   >
-                     <Show when={props.loggingIn.pending} fallback="Login">
+                     <Show when={props.signingIn.pending} fallback="Sign up">
                         Submitting
                      </Show>
                   </button>
