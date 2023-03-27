@@ -1,8 +1,9 @@
-import { Show } from "solid-js"
+import { createEffect, Show } from "solid-js"
 import { useParams, useRouteData } from "solid-start"
 import { FormError } from "solid-start/data"
 import { createServerAction$, createServerData$, redirect } from "solid-start/server"
 import Input from "~/components/ui/Input"
+import ToastProvider, { createToast } from "~/components/ui/Toast"
 import { db } from "~/db"
 import { createUserSession, getUser, login, register } from "~/db/session"
 
@@ -18,126 +19,120 @@ function validatePassword(password: unknown) {
    }
 }
 
-export function routeData() {
-   return createServerData$(async (_, { request }) => {
-      if (await getUser(db, request)) {
-         throw redirect("/")
-      }
-      return {}
-   })
+function checkFields(form: FormData) {
+   const loginType = form.get("loginType")
+   const username = form.get("username")
+   const password = form.get("password")
+   const redirectTo = form.get("redirectTo") || "/"
+
+   if (
+      typeof loginType !== "string" ||
+      typeof username !== "string" ||
+      typeof password !== "string" ||
+      typeof redirectTo !== "string"
+   ) {
+      throw new FormError(`Form not submitted correctly.`)
+   }
+
+   const fields = { username, password, redirectTo }
+
+   const fieldErrors = {
+      username: validateUsername(username),
+      password: validatePassword(password),
+   }
+   if (Object.values(fieldErrors).some(Boolean)) {
+      throw new FormError("Fields invalid", { fieldErrors, fields })
+   }
+
+   return fields
 }
 
+// export function routeData() {
+//    return createServerData$(async (_, { request }) => {
+//       if (await getUser(db, request)) {
+//          throw redirect("/")
+//       }
+//       return {}
+//    })
+// }
+
 export default function Login() {
-   const data = useRouteData<typeof routeData>()
+   // const data = useRouteData<typeof routeData>()
    const params = useParams()
 
    const [loggingIn, { Form }] = createServerAction$(async (form: FormData) => {
-      const loginType = form.get("loginType")
-      const username = form.get("username")
-      const password = form.get("password")
-      const redirectTo = form.get("redirectTo") || "/"
-      if (
-         typeof loginType !== "string" ||
-         typeof username !== "string" ||
-         typeof password !== "string" ||
-         typeof redirectTo !== "string"
-      ) {
-         throw new FormError(`Form not submitted correctly.`)
-      }
+      const fields = checkFields(form)
 
-      const fields = { loginType, username, password }
-      const fieldErrors = {
-         username: validateUsername(username),
-         password: validatePassword(password),
+      const user = await login({ username: fields.username, password: fields.password })
+      if (!user) {
+         throw new FormError(`Username/Password combination is incorrect`, {
+            fields,
+         })
       }
-      if (Object.values(fieldErrors).some(Boolean)) {
-         throw new FormError("Fields invalid", { fieldErrors, fields })
-      }
+      return createUserSession(`${user.id}`, fields.redirectTo)
+   })
 
-      switch (loginType) {
-         case "login": {
-            const user = await login({ username, password })
-            if (!user) {
-               throw new FormError(`Username/Password combination is incorrect`, {
-                  fields,
-               })
-            }
-            return createUserSession(`${user.id}`, redirectTo)
-         }
-         case "register": {
-            const userExists = await db.user.findUnique({ where: { username } })
-            if (userExists) {
-               throw new FormError(`User with username ${username} already exists`, {
-                  fields,
-               })
-            }
-            const user = await register({ username, password })
-            if (!user) {
-               throw new FormError(`Something went wrong trying to create a new user.`, {
-                  fields,
-               })
-            }
-            return createUserSession(`${user.id}`, redirectTo)
-         }
-         default: {
-            throw new FormError(`Login type invalid`, { fields })
-         }
+   createEffect(() => {
+      if (loggingIn?.error?.message) {
+         createToast(loggingIn?.error?.message)
       }
    })
 
    return (
-      <main class="min-h-screen">
-         <h1 class="text-2xl font-bold text-center">Login</h1>
-
-         <div class="grid grid-cols-1 md:grid-cols-2 h-full items-center">
-            <div class="md:parent fixed inset-0">
-               <div class="bg-[url(/img/g-1.jpg)] w-full h-full md:box md:w-[600px] md:h-[500px]"></div>
+      <main class="min-h-screen flex items-center">
+         <div class="grid grid-cols-1 md:grid-cols-2 w-full items-center max-w-7xl mx-auto">
+            <div class="relative max-h-screen overflow-hidden  ">
+               <div class="md:fade" />
+               <img
+                  src="/img/g-1.jpg"
+                  alt="Garden"
+                  class="block h-full w-full object-cover fixed inset-0 md:relative"
+               />
             </div>
 
-            <div class=""></div>
+            <div class="relative z-10 bg-white/60 shadow-5 md:shadow-none backdrop-blur-sm rounded-xl max-w-md w-full mx-auto px-4 py-6">
+               <h1 class="text-3xl font-extrabold text-center">Login</h1>
+               <Form class="space-y-10">
+                  <input type="hidden" autofocus name="redirectTo" value={params.redirectTo ?? "/"} />
 
-            <Form class="max-w-md w-full mx-auto space-y-10 p-4">
-               <input type="hidden" name="redirectTo" value={params.redirectTo ?? "/"} />
+                  <Input
+                     name="email"
+                     type="email"
+                     placeholder="kody66@mail.com"
+                     error={loggingIn.error?.fieldErrors?.username}
+                  />
 
-               <Input name="username" placeholder="kody" error={loggingIn.error?.fieldErrors?.username} />
+                  <Input name="username" placeholder="kody" error={loggingIn.error?.fieldErrors?.username} />
 
-               <Input
-                  name="password"
-                  type="password"
-                  placeholder="twixrox"
-                  error={loggingIn.error?.fieldErrors?.password}
-               />
+                  <Input
+                     name="password"
+                     type="password"
+                     placeholder="twixrox"
+                     error={loggingIn.error?.fieldErrors?.password}
+                  />
 
-               <Show when={loggingIn?.error}>
-                  <p role="alert" class="text-xs pl-2 text-center text-red-500 font-semibold my-4">
-                     {loggingIn.error.message}
-                  </p>
-               </Show>
-               <button type="submit" class="btn btn-solid-primary btn-pill md:px-10 md:py-3 mx-auto">
-                  Login
-               </button>
-            </Form>
+                  <button type="submit" class="btn btn-solid-primary btn-pill px-10 py-2.5 mx-auto">
+                     Login
+                  </button>
+               </Form>
+            </div>
          </div>
-
-         <FilterSVG />
       </main>
    )
 }
 
-const FilterSVG = () => (
-   <svg
-      style="visibility: hidden; position: absolute;"
-      width="0"
-      height="0"
-      xmlns="http://www.w3.org/2000/svg"
-      version="1.1"
-   >
-      <defs>
-         <filter id="goo">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur" />
-            <feColorMatrix in="blur" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo" />
-            <feComposite in="SourceGraphic" in2="goo" operator="atop" />
-         </filter>
-      </defs>
-   </svg>
-)
+// case "register": {
+//    const userExists = await db.user.findUnique({ where: { username } })
+//    if (userExists) {
+//       throw new FormError(`User with username ${username} already exists`, {
+//          fields,
+//       })
+//    }
+//    const user = await register({ username, password })
+//    if (!user) {
+//       throw new FormError(`Something went wrong trying to create a new user.`, {
+//          fields,
+//       })
+//    }
+//    return createUserSession(`${user.id}`, redirectTo)
+// }

@@ -3,17 +3,22 @@
 @tailwind utilities;
 
 @layer utilities {
-   .box {
-      background-image: url(/img/g-1.jpg);
-      color: white;
-      clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
-   }
-
-   .parent {
-      overflow: hidden;
-      filter: url("#goo");
+   .fade {
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      z-index: 10;
+      background: -webkit-linear-gradient(
+         right,
+         rgb(255, 255, 255) 0%,
+         rgba(255, 255, 255, 0.13) 20%,
+         transparent 100%
+      );
    }
 }
+
+/* rgba(255, 255, 255, 0) 85%,
+         rgb(255, 255, 255) 100% */
 
 @layer components {
    .btn {
@@ -29,9 +34,9 @@
       @apply rounded-xl px-6 py-2;
    }
 
-   .btn-rect-sm {
-      @apply rounded-xl text-base px-4 py-2;
-   }
+   /*   .btn-rect-sm {
+      @apply rounded-xl px-4 py-2;
+   }*/
 
    .btn-icon {
       @apply h-12 w-12 text-2xl rounded-xl;
