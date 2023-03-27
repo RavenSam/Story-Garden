@@ -2,6 +2,7 @@ import { createEffect, Show } from "solid-js"
 import { useParams, useRouteData } from "solid-start"
 import { FormError } from "solid-start/data"
 import { createServerAction$, createServerData$, redirect } from "solid-start/server"
+import LoginSection from "~/components/sections/LoginSection"
 import Input from "~/components/ui/Input"
 import ToastProvider, { createToast } from "~/components/ui/Toast"
 import { db } from "~/db"
@@ -78,47 +79,7 @@ export default function Login() {
       }
    })
 
-   return (
-      <main class="min-h-screen flex items-center">
-         <div class="grid grid-cols-1 md:grid-cols-2 w-full items-center max-w-7xl mx-auto">
-            <div class="relative max-h-screen overflow-hidden  ">
-               <div class="md:fade" />
-               <img
-                  src="/img/g-1.jpg"
-                  alt="Garden"
-                  class="block h-full w-full object-cover fixed inset-0 md:relative"
-               />
-            </div>
-
-            <div class="relative z-10 bg-white/60 shadow-5 md:shadow-none backdrop-blur-sm rounded-xl max-w-md w-full mx-auto px-4 py-6">
-               <h1 class="text-3xl font-extrabold text-center">Login</h1>
-               <Form class="space-y-10">
-                  <input type="hidden" autofocus name="redirectTo" value={params.redirectTo ?? "/"} />
-
-                  <Input
-                     name="email"
-                     type="email"
-                     placeholder="kody66@mail.com"
-                     error={loggingIn.error?.fieldErrors?.username}
-                  />
-
-                  <Input name="username" placeholder="kody" error={loggingIn.error?.fieldErrors?.username} />
-
-                  <Input
-                     name="password"
-                     type="password"
-                     placeholder="twixrox"
-                     error={loggingIn.error?.fieldErrors?.password}
-                  />
-
-                  <button type="submit" class="btn btn-solid-primary btn-pill px-10 py-2.5 mx-auto">
-                     Login
-                  </button>
-               </Form>
-            </div>
-         </div>
-      </main>
-   )
+   return <LoginSection Form={Form} loggingIn={loggingIn} />
 }
 
 // case "register": {
