@@ -1,7 +1,10 @@
-import { createEffect, ParentComponent } from "solid-js"
+import { createEffect, ParentComponent, Show } from "solid-js"
 import { FormProps, useParams } from "solid-start"
 import Input from "~/components/ui/Input"
 import toast from "solid-toast"
+import { useFormHandler } from "solid-form-handler"
+import { zodSchema } from "solid-form-handler/zod"
+import { z } from "zod"
 
 type loggingIn = {
    pending: boolean
@@ -17,19 +20,24 @@ interface LoginProps {
    Form: ParentComponent<FormProps>
 }
 
+export const userSchema = z.object({
+   email: z.string().nonempty("Your email is required.").email({ message: "Must be a valid email." }),
+   password: z.string().nonempty("A password is required.").min(8, { message: "Too short." }),
+})
+
 export default function LoginSection(props: LoginProps) {
-   const { loggingIn, Form } = props
+   const formHandler = useFormHandler(zodSchema(userSchema), { validateOn: ["blur"] })
    const params = useParams()
 
    createEffect(() => {
-      if (loggingIn?.error?.message) {
-         toast.error(loggingIn?.error?.message)
+      if (props.loggingIn?.error?.message) {
+         toast.error(props.loggingIn?.error?.message, { className: "error" })
       }
    })
 
    return (
       <main class="min-h-screen flex items-center">
-         <div class="grid grid-cols-1 md:grid-cols-2 w-full items-center max-w-7xl mx-auto">
+         <div class="grid grid-cols-1 md:grid-cols-2 w-full items-center max-w-[90rem] mx-auto">
             <div class="relative max-h-screen overflow-hidden rounded-l-sm">
                <div class="md:fade" />
                <img
@@ -38,12 +46,12 @@ export default function LoginSection(props: LoginProps) {
                   class="block h-full w-full object-cover fixed inset-0 md:relative"
                />
 
-               <div class="absolute inset-0 z-[9] flex items-center p-8 text-white bg-black/40">
+               <div class="absolute inset-0 z-[9] flex items-center p-8 text-white bg-black/50">
                   <div class="space-y-4">
                      <h2 class="text-5xl font-extrabold [text-shadow:_0_1px_0_rgb(0_0_0_/60%)]">
                         <span class="text-emerald-500 ">Welcome</span> back!
                      </h2>
-                     <p class="text-xl text-slate-100 font-extrabold [text-shadow:_0_1px_0_rgb(0_0_0_/_40%)]">
+                     <p class="text-xl text-slate-100 font-medium pb-20 [text-shadow:_0_1px_0_rgb(0_0_0_/_40%)]">
                         Ready to write? It's about time.
                      </p>
                   </div>
@@ -54,27 +62,23 @@ export default function LoginSection(props: LoginProps) {
                <h1 class="text-3xl font-extrabold py-5">
                   Login<span class="text-emerald-500">.</span>
                </h1>
-               <Form class="space-y-10">
+               <props.Form class="space-y-8" autocomplete="off">
                   <input type="hidden" autofocus name="redirectTo" value={params.redirectTo ?? "/"} />
 
-                  <Input
-                     name="email"
-                     type="email"
-                     placeholder="kody66@mail.com"
-                     error={loggingIn.error?.fieldErrors?.username}
-                  />
+                  <Input formHandler={formHandler} name="email" placeholder="kody66@mail.com" />
 
-                  <Input
-                     name="password"
-                     type="password"
-                     placeholder="twixrox"
-                     error={loggingIn.error?.fieldErrors?.password}
-                  />
+                  <Input formHandler={formHandler} name="password" type="password" placeholder="twixrox" />
 
-                  <button type="submit" class="btn btn-solid-primary btn-pill px-10 py-2.5 mx-auto">
-                     Login
+                  <button
+                     type="submit"
+                     class="btn btn-solid-primary btn-pill min-w-[8rem] py-2.5 mx-auto"
+                     disabled={formHandler.isFormInvalid() || props.loggingIn.pending}
+                  >
+                     <Show when={props.loggingIn.pending} fallback="Login">
+                        Submitting
+                     </Show>
                   </button>
-               </Form>
+               </props.Form>
             </div>
          </div>
       </main>

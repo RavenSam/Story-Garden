@@ -1,0 +1,20 @@
+.toaster .sldt-active > div {
+   border-radius: 0.75rem !important;
+   padding: 1rem 1.5rem !important;
+   width: 100%;
+}
+
+.toaster .error {
+   background: linear-gradient(to left, rgb(44, 44, 44), rgba(71, 0, 18, 0.863)) !important;
+   color: white !important;
+}
+
+.toaster .success {
+   background: linear-gradient(to left, rgb(44, 44, 44), rgba(0, 71, 9, 0.863)) !important;
+   color: white !important;
+}
+
+.toaster .loading {
+   background: linear-gradient(to left, rgb(44, 44, 44), rgba(0, 22, 71, 0.863)) !important;
+   color: white !important;
+}
