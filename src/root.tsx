@@ -2,7 +2,8 @@
 import { Suspense } from "solid-js"
 import { Body, ErrorBoundary, FileRoutes, Head, Html, Meta, Routes, Scripts, Title } from "solid-start"
 import "../styles/root.css"
-import ToastProvider from "./components/ui/Toast"
+import { Toaster } from "solid-toast"
+import SolidNProgress from "./components/ui/SolidNProgress"
 
 export default function Root() {
    return (
@@ -13,7 +14,9 @@ export default function Root() {
             <Meta name="viewport" content="width=device-width, initial-scale=1" />
          </Head>
          <Body>
-            <ToastProvider />
+            <Toaster />
+
+            <SolidNProgress />
 
             <ErrorBoundary>
                <Suspense fallback={<div>Loading</div>}>

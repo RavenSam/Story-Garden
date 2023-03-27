@@ -1,6 +1,7 @@
-import { ParentComponent } from "solid-js"
+import { createEffect, ParentComponent } from "solid-js"
 import { FormProps, useParams } from "solid-start"
 import Input from "~/components/ui/Input"
+import toast from "solid-toast"
 
 type loggingIn = {
    pending: boolean
@@ -19,6 +20,12 @@ interface LoginProps {
 export default function LoginSection(props: LoginProps) {
    const { loggingIn, Form } = props
    const params = useParams()
+
+   createEffect(() => {
+      if (loggingIn?.error?.message) {
+         toast.error(loggingIn?.error?.message)
+      }
+   })
 
    return (
       <main class="min-h-screen flex items-center">

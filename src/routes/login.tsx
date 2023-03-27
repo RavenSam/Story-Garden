@@ -1,10 +1,8 @@
-import { createEffect, Show } from "solid-js"
+import { createEffect } from "solid-js"
 import { useParams, useRouteData } from "solid-start"
 import { FormError } from "solid-start/data"
 import { createServerAction$, createServerData$, redirect } from "solid-start/server"
 import LoginSection from "~/components/sections/LoginSection"
-import Input from "~/components/ui/Input"
-import ToastProvider, { createToast } from "~/components/ui/Toast"
 import { db } from "~/db"
 import { createUserSession, getUser, login, register } from "~/db/session"
 
@@ -59,7 +57,6 @@ function checkFields(form: FormData) {
 
 export default function Login() {
    // const data = useRouteData<typeof routeData>()
-   const params = useParams()
 
    const [loggingIn, { Form }] = createServerAction$(async (form: FormData) => {
       const fields = checkFields(form)
@@ -71,12 +68,6 @@ export default function Login() {
          })
       }
       return createUserSession(`${user.id}`, fields.redirectTo)
-   })
-
-   createEffect(() => {
-      if (loggingIn?.error?.message) {
-         createToast(loggingIn?.error?.message)
-      }
    })
 
    return <LoginSection Form={Form} loggingIn={loggingIn} />

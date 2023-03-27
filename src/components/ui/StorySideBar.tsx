@@ -136,7 +136,7 @@ export default function StorySideBar(props: SideBarProps) {
                "max-width": SIDENAV_MAX_WIDTH + "px",
                transform: mobileScreen() ? (open() ? "translateX(0)" : "translateX(-100%)") : "translateX(0)",
             }}
-            class="fixed left-0 top-0 bottom-0 bg-white p-2 transition-all z-20"
+            class="fixed left-0 top-0 bottom-0 bg-white p-2 transition-all z-[15]"
          >
             <nav class="space-y-1 flex flex-col h-full pt-20">
                <For each={navList}>{(item) => <SideLink item={item} />}</For>
