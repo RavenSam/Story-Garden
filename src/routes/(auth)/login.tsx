@@ -31,8 +31,6 @@ export const routeData = () => {
 }
 
 export default function Login() {
-   // const user = useRouteData<typeof routeData>()
-
    const [loggingIn, { Form }] = createRouteAction(async (form: FormData) => {
       const fields = checkFields(form)
 

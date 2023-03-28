@@ -1,5 +1,5 @@
 import { For, createSignal, Show, JSXElement, onMount, createEffect, onCleanup } from "solid-js"
-import { A } from "solid-start"
+import { A, useLocation, useParams } from "solid-start"
 import { IconTypes } from "solid-icons"
 import { TiHomeOutline, TiDocument, TiUserOutline, TiThLargeOutline, TiChevronRight } from "solid-icons/ti"
 import { HiSolidMenuAlt2 } from "solid-icons/hi"
@@ -110,6 +110,7 @@ interface SideBarProps {
 
 export default function StorySideBar(props: SideBarProps) {
    const [sideNavWidth, setSideNavWidth] = createSignal(0)
+   const params = useParams()
 
    createEffect(() => setMobileScreen(windowWidth() < BREAKPOINT))
 
@@ -142,7 +143,9 @@ export default function StorySideBar(props: SideBarProps) {
                <For each={navList}>{(item) => <SideLink item={item} />}</For>
 
                <div class="!mt-auto">
-                  <EditorSettingsModal mobileScreen={mobileScreen} open={open} />
+                  <Show when={params.chapter}>
+                     <EditorSettingsModal mobileScreen={mobileScreen} open={open} />
+                  </Show>
                </div>
             </nav>
 

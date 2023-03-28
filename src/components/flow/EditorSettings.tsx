@@ -21,7 +21,6 @@ interface RadioProps {
    title: string
    each: any[]
    default?: string | number
-   square: boolean
    col: number
    key: string
 }
@@ -49,10 +48,10 @@ const RadiosCards = (props: RadioProps) => {
                {(el) => (
                   <label
                      for={`size-${getEl(el, 0)}`}
-                     class="relative flex items-center justify-center border shadow-8 rounded-xl p-2 cursor-pointer"
+                     class="relative flex items-center bg-slate-200 text-slate-700  justify-center shadow-8 rounded-full py-2 px-8 cursor-pointer"
                      classList={{
-                        "!border-emerald-500 text-emerald-500 border-emerald-500 !shadow-5": getEl(el, 1) === checked(),
-                        "aspect-square": props.square,
+                        "!text-white !bg-gradient-to-br from-emerald-500 to-emerald-400 !shadow-5":
+                           getEl(el, 1) === checked(),
                      }}
                   >
                      <input
@@ -65,11 +64,11 @@ const RadiosCards = (props: RadioProps) => {
                      />
                      <span class="p-2 font-bold text-sm capitalize">{getEl(el, 0)}</span>
 
-                     <Show when={getEl(el, 1) === checked()}>
+                     {/* <Show when={getEl(el, 1) === checked()}>
                         <span class="absolute top-0 left-0 text-2xl text-emerald-500">
                            <HiSolidCheckCircle />
                         </span>
-                     </Show>
+                     </Show> */}
                   </label>
                )}
             </For>
@@ -111,7 +110,6 @@ export default function EditorSettingsModal(props: EditorSettingsModalProps) {
                   title="Editor width"
                   each={editorSettingsOptions.widths}
                   col={4}
-                  square={true}
                   default={editorSettings()?.width}
                   key="width"
                />
@@ -121,7 +119,6 @@ export default function EditorSettingsModal(props: EditorSettingsModalProps) {
                   title="Editor background"
                   each={Object.entries(editorSettingsOptions.bg)}
                   col={3}
-                  square={true}
                   default={editorSettings()?.bg}
                   key="bg"
                />
@@ -130,8 +127,7 @@ export default function EditorSettingsModal(props: EditorSettingsModalProps) {
                <RadiosCards
                   title="Toolbar position"
                   each={Object.entries(editorSettingsOptions.toolbar_position)}
-                  col={1}
-                  square={false}
+                  col={2}
                   default={editorSettings()?.toolbar_position}
                   key="toolbar_position"
                />

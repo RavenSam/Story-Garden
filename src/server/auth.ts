@@ -3,7 +3,6 @@ import type { User } from "@prisma/client"
 import { sessionStorage } from "~/utils/auth"
 import { Authenticator } from "@solid-auth/core"
 import { CredentialsStrategy } from "@solid-auth/credentials"
-import { createUserSession } from "~/server/db/session"
 
 export const authenticator = new Authenticator<Omit<User, "password">>(sessionStorage)
 
@@ -18,8 +17,6 @@ authenticator.use(
       if (user.password !== input.password) {
          throw new Error("Username/Password combination is incorrect")
       }
-
-      if (!user) return null
 
       return { email: user.email, penName: user.penName, id: user.id }
    })

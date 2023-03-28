@@ -95,7 +95,7 @@ export default function TiptapEditor(props: TipEditorProps): JSX.Element {
          <div class={`${props.editorSettings.toolbar_position}  relative`}>
             <Show when={editor()} keyed>
                {(instance) => (
-                  <div class="FixedToolbar sticky w-full p-2 rounded-xl bg-white/70 backdrop-blur-sm shadow-1 z-10">
+                  <div class="FixedToolbar sticky w-full p-2 rounded-xl bg-white/70 backdrop-blur-sm shadow-6 z-10">
                      <FixedToolbar editor={instance} />
                   </div>
                )}
