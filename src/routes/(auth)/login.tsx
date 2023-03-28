@@ -1,12 +1,21 @@
-import { createEffect } from "solid-js"
-import { useParams, useRouteData, createRouteAction } from "solid-start"
+import { createRouteAction } from "solid-start"
 import { FormError } from "solid-start/data"
-import { createServerAction$, createServerData$, redirect } from "solid-start/server"
-import toast from "solid-toast"
+import { createServerData$, redirect } from "solid-start/server"
 import LoginSection from "~/components/sections/LoginSection"
 import { authenticator } from "~/server/auth"
-import { createUserSession, getUserId, getUserSession } from "~/server/db/session"
 import { authClient } from "~/utils/auth"
+
+export const routeData = () => {
+   return createServerData$(async (_, { request }) => {
+      const user = await authenticator.isAuthenticated(request)
+
+      if (user) {
+         throw redirect("/author/stories")
+      }
+
+      return {}
+   })
+}
 
 function checkFields(form: FormData) {
    const email = form.get("email")
@@ -18,14 +27,6 @@ function checkFields(form: FormData) {
    }
 
    return { email, password, redirectTo }
-}
-
-export const routeData = () => {
-   return createServerData$(async (_, { request }) => {
-      const user = await authenticator.isAuthenticated(request)
-      console.log(user)
-      return user
-   })
 }
 
 export default function Login() {

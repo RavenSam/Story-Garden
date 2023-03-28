@@ -1,5 +1,7 @@
 import { createRouteAction, FormError, redirect } from "solid-start"
+import { createServerData$ } from "solid-start/server"
 import SignUpSection from "~/components/sections/SignUpSection"
+import { authenticator } from "~/server/auth"
 import { authClient } from "~/utils/auth"
 
 function checkFields(form: FormData) {
@@ -18,6 +20,18 @@ function checkFields(form: FormData) {
    }
 
    return { penName, email, password, redirectTo, register: true }
+}
+
+export const routeData = () => {
+   return createServerData$(async (_, { request }) => {
+      const user = await authenticator.isAuthenticated(request)
+
+      if (user) {
+         throw redirect("/author/stories")
+      }
+
+      return {}
+   })
 }
 
 export default function SignUp() {
