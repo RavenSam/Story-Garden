@@ -21,16 +21,13 @@ interface SignUpProps {
 }
 
 export const userSchema = z.object({
-   penName: z
-      .string()
-      .nonempty("A pen name is required.")
-      .min(3, { message: "Your pen name must be at least 3 characters long." }),
-   email: z.string().nonempty("Email is required.").email({ message: "Must be a valid email." }),
-   password: z.string().nonempty("A password is required.").min(8, { message: "Too short." }),
+   penName: z.string().nonempty("A pen name is required.").min(3, "Your pen name must be at least 3 characters long."),
+   email: z.string().nonempty("Email is required.").email("Must be a valid email."),
+   password: z.string().nonempty("A password is required.").min(8, "Too short."),
 })
 
 export default function SignUpSection(props: SignUpProps) {
-   const formHandler = useFormHandler(zodSchema(userSchema), { validateOn: ["blur"] })
+   const formHandler = useFormHandler(zodSchema(userSchema))
    const params = useParams()
 
    createEffect(() => {

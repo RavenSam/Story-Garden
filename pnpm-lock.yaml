@@ -2,6 +2,9 @@ lockfileVersion: 5.4
 
 specifiers:
   '@prisma/client': ^4.9.0
+  '@solid-auth/core': ^0.0.6
+  '@solid-auth/credentials': ^0.0.4
+  '@solid-auth/oauth2': ^0.0.8
   '@solidjs/meta': ^0.28.2
   '@solidjs/router': ^0.8.1
   '@tailwindcss/typography': ^0.5.9
@@ -35,6 +38,9 @@ specifiers:
 
 dependencies:
   '@prisma/client': 4.11.0_prisma@4.11.0
+  '@solid-auth/core': 0.0.6_fsw2gpo4d37xepehosfrle6i74
+  '@solid-auth/credentials': 0.0.4_lgxgebqgybab6ng4ngffxtg2au
+  '@solid-auth/oauth2': 0.0.8_lgxgebqgybab6ng4ngffxtg2au
   '@solidjs/meta': 0.28.2_solid-js@1.6.15
   '@solidjs/router': 0.8.1_solid-js@1.6.15
   '@tiptap/core': 2.0.0-beta.220_@tiptap+pm@2.0.0-beta.220
@@ -1585,6 +1591,43 @@ packages:
 
   /@sideway/pinpoint/2.0.0:
     resolution: {integrity: sha512-RNiOoTPkptFtSVzQevY/yWtZwf/RxyVnPy/OcA9HBM3MlGDnBEYL5B41H0MTn0Uec8Hi+2qUtTfG2WWZBmMejQ==}
+
+  /@solid-auth/core/0.0.6_fsw2gpo4d37xepehosfrle6i74:
+    resolution: {integrity: sha512-NxnMlCmrOW88BzCDeTIKoLj7cMLwKoymv9sFvDDbUVlSuFLhFP2S1rXyOMedCPBbBzxyTIlpOUmB2IlvBLiB6A==}
+    engines: {node: '>=16'}
+    peerDependencies:
+      solid-js: ^1.5.7
+      solid-start: ^0.2.1
+    dependencies:
+      solid-js: 1.6.15
+      solid-start: 0.2.23_iba5tui4eac3egldlo4yjtxeem
+    dev: false
+
+  /@solid-auth/credentials/0.0.4_lgxgebqgybab6ng4ngffxtg2au:
+    resolution: {integrity: sha512-Va0gltsqSKdE9qMSbPyg206gdUAbDNB+fwAMFFOcgj3LEqxOQzH6OiGh/eLn5i7lpiJu/fPQGW1fE2Wjl94ovA==}
+    engines: {node: '>=16'}
+    peerDependencies:
+      '@solid-auth/core': ~0.0.1
+      solid-js: ^1.5.7
+      solid-start: ^0.2.1
+    dependencies:
+      '@solid-auth/core': 0.0.6_fsw2gpo4d37xepehosfrle6i74
+      solid-js: 1.6.15
+      solid-start: 0.2.23_iba5tui4eac3egldlo4yjtxeem
+    dev: false
+
+  /@solid-auth/oauth2/0.0.8_lgxgebqgybab6ng4ngffxtg2au:
+    resolution: {integrity: sha512-lPU0smfW9FPEmf1maGH/cqnfiSGL+x9Jlt/1q3JFyXtT6XvamkfFUuv64Ik3m4/E4LW1LtXzXWIS4hWKMGuMHQ==}
+    engines: {node: '>=16'}
+    peerDependencies:
+      '@solid-auth/core': ~0.0.1
+      solid-js: ^1.5.7
+      solid-start: ^0.2.1
+    dependencies:
+      '@solid-auth/core': 0.0.6_fsw2gpo4d37xepehosfrle6i74
+      solid-js: 1.6.15
+      solid-start: 0.2.23_iba5tui4eac3egldlo4yjtxeem
+    dev: false
 
   /@solid-primitives/refs/1.0.0_solid-js@1.6.15:
     resolution: {integrity: sha512-eoX2UNSIGIFniuf7bbq7vPdl7QxNL/vxHQFxbXaqtFpvPaLDHRNLzYOO3xai24D8U63Vmg1Wresysia9B35mXw==}

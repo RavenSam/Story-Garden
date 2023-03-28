@@ -1,12 +1,12 @@
 import { FormError } from "solid-start"
 import { createServerAction$ } from "solid-start/server"
 import SignUpSection from "~/components/sections/SignUpSection"
-import { db } from "~/db"
-import { createUserSession, register } from "~/db/session"
+import { db } from "~/server/db"
+import { createUserSession, register } from "~/server/db/session"
 
 function checkFields(form: FormData) {
-   const penName = form.get("loginType")
-   const email = form.get("username")
+   const penName = form.get("penName")
+   const email = form.get("email")
    const password = form.get("password")
    const redirectTo = form.get("redirectTo") || "/"
 

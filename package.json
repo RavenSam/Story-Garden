@@ -8,6 +8,9 @@
   "type": "module",
   "dependencies": {
     "@prisma/client": "^4.9.0",
+    "@solid-auth/core": "^0.0.6",
+    "@solid-auth/credentials": "^0.0.4",
+    "@solid-auth/oauth2": "^0.0.8",
     "@solidjs/meta": "^0.28.2",
     "@solidjs/router": "^0.8.1",
     "@tiptap/core": "2.0.0-beta.220",

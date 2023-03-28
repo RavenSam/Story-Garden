@@ -21,12 +21,12 @@ interface LoginProps {
 }
 
 export const userSchema = z.object({
-   email: z.string().nonempty("Your email is required.").email({ message: "Must be a valid email." }),
-   password: z.string().nonempty("A password is required.").min(8, { message: "Too short." }),
+   email: z.string().nonempty("Your email is required.").email("Must be a valid email."),
+   password: z.string().nonempty("A password is required.").min(8, "Too short."),
 })
 
 export default function LoginSection(props: LoginProps) {
-   const formHandler = useFormHandler(zodSchema(userSchema), { validateOn: ["blur"] })
+   const formHandler = useFormHandler(zodSchema(userSchema))
    const params = useParams()
 
    createEffect(() => {

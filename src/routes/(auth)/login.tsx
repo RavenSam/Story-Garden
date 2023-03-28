@@ -1,11 +1,15 @@
-import { useParams, useRouteData } from "solid-start"
+import { createEffect } from "solid-js"
+import { useParams, useRouteData, createRouteAction } from "solid-start"
 import { FormError } from "solid-start/data"
 import { createServerAction$, createServerData$, redirect } from "solid-start/server"
+import toast from "solid-toast"
 import LoginSection from "~/components/sections/LoginSection"
-import { createUserSession, login } from "~/db/session"
+import { authenticator } from "~/server/auth"
+import { createUserSession, getUserId, getUserSession } from "~/server/db/session"
+import { authClient } from "~/utils/auth"
 
 function checkFields(form: FormData) {
-   const email = form.get("username")
+   const email = form.get("email")
    const password = form.get("password")
    const redirectTo = form.get("redirectTo") || "/"
 
@@ -13,31 +17,32 @@ function checkFields(form: FormData) {
       throw new FormError(`Form not submitted correctly.`)
    }
 
-   return { email, password, redirectTo }
+   const penName = email.split("@")[0]
+
+   return { email, password, redirectTo, penName }
 }
 
-// export function routeData() {
-//    return createServerData$(async (_, { request }) => {
-//       if (await getUser(db, request)) {
-//          throw redirect("/")
-//       }
-//       return {}
-//    })
-// }
+export const routeData = () => {
+   return createServerData$(async (_, { request }) => {
+      const user = await authenticator.isAuthenticated(request)
+      console.log(user)
+      return user
+   })
+}
 
 export default function Login() {
-   // const data = useRouteData<typeof routeData>()
+   // const user = useRouteData<typeof routeData>()
 
-   const [loggingIn, { Form }] = createServerAction$(async (form: FormData) => {
+   const [loggingIn, { Form }] = createRouteAction(async (form: FormData) => {
       const fields = checkFields(form)
 
-      const user = await login({ username: fields.email, password: fields.password })
-      if (!user) {
-         throw new FormError(`Username/Password combination is incorrect`, {
-            fields,
-         })
+      try {
+         const res = await authClient.login("credentials", { input: fields })
+         return res
+      } catch (e: any) {
+         console.log("auth error", e)
+         if (e.message) throw new FormError(e.message)
       }
-      return createUserSession(`${user.id}`, fields.redirectTo)
    })
 
    return <LoginSection Form={Form} loggingIn={loggingIn} />
