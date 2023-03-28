@@ -17,9 +17,7 @@ function checkFields(form: FormData) {
       throw new FormError(`Form not submitted correctly.`)
    }
 
-   const penName = email.split("@")[0]
-
-   return { email, password, redirectTo, penName }
+   return { email, password, redirectTo }
 }
 
 export const routeData = () => {

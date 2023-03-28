@@ -1,8 +1,6 @@
-import { FormError } from "solid-start"
-import { createServerAction$ } from "solid-start/server"
+import { createRouteAction, FormError, redirect } from "solid-start"
 import SignUpSection from "~/components/sections/SignUpSection"
-import { db } from "~/server/db"
-import { createUserSession, register } from "~/server/db/session"
+import { authClient } from "~/utils/auth"
 
 function checkFields(form: FormData) {
    const penName = form.get("penName")
@@ -19,26 +17,24 @@ function checkFields(form: FormData) {
       throw new FormError(`Form not submitted correctly.`)
    }
 
-   return { penName, email, password, redirectTo }
+   return { penName, email, password, redirectTo, register: true }
 }
 
 export default function SignUp() {
-   const [signingIn, { Form }] = createServerAction$(async (form: FormData) => {
+   const [signingIn, { Form }] = createRouteAction(async (form: FormData) => {
       const fields = checkFields(form)
 
-      const userExists = await db.user.findUnique({ where: { email: fields.email } })
-      if (userExists) {
-         throw new FormError(`Email already exists`, {
-            fields,
-         })
+      try {
+         const res = await authClient.login("credentials", { input: fields })
+         if (res.success) {
+            return redirect("/author/stories/s")
+         } else {
+            throw new FormError("Something went wrong")
+         }
+      } catch (e: any) {
+         console.log("auth error", e)
+         if (e.message) throw new FormError(e.message)
       }
-      const user = await register(fields)
-      if (!user) {
-         throw new FormError(`Something went wrong trying to create a new user.`, {
-            fields,
-         })
-      }
-      return createUserSession(`${user.id}`, fields.redirectTo)
    })
 
    return <SignUpSection Form={Form} signingIn={signingIn} />
