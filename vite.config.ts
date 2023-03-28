@@ -5,4 +5,7 @@ import vercel from "solid-start-vercel"
 export default defineConfig({
    plugins: [solid({ adapter: vercel({}) })],
    ssr: { external: ["@prisma/client"] },
+   optimizeDeps: {
+      exclude: ["bcrypt"],
+   },
 })

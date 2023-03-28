@@ -27,9 +27,9 @@ export default function SignUp() {
       try {
          const res = await authClient.login("credentials", { input: fields })
          if (res.success) {
-            return redirect("/author/stories/s")
+            return redirect("/author/stories")
          } else {
-            throw new FormError("Something went wrong")
+            throw new FormError("Something went wrong! Please try again.")
          }
       } catch (e: any) {
          console.log("auth error", e)

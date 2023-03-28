@@ -34,7 +34,11 @@ export default function Login() {
 
       try {
          const res = await authClient.login("credentials", { input: fields })
-         return res
+         if (res.success) {
+            return redirect("/author/stories")
+         } else {
+            throw new FormError("Something went wrong! Please try again.")
+         }
       } catch (e: any) {
          console.log("auth error", e)
          if (e.message) throw new FormError(e.message)

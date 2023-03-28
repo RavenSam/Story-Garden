@@ -1,10 +1,11 @@
 import { createEffect, ParentComponent, Show } from "solid-js"
-import { FormProps, useParams } from "solid-start"
+import { A, FormProps, useParams } from "solid-start"
 import Input from "~/components/ui/Input"
 import toast from "solid-toast"
 import { useFormHandler } from "solid-form-handler"
 import { zodSchema } from "solid-form-handler/zod"
 import { z } from "zod"
+import SocialAuthBtn from "./SocialAuthBtn"
 
 type SigningInTpes = {
    pending: boolean
@@ -60,11 +61,16 @@ export default function SignUpSection(props: SignUpProps) {
                </div>
             </div>
 
-            <div class="relative z-10 bg-white/60 shadow-5 md:shadow-none backdrop-blur-sm rounded-xl max-w-md w-full mx-auto px-4 py-6">
+            <div class="relative z-10 bg-white/60 shadow-5 md:shadow-none backdrop-blur-sm rounded-xl max-w-md w-full mx-auto p-4">
                <h1 class="text-3xl font-extrabold py-5">
                   Sign up<span class="text-emerald-500">.</span>
                </h1>
-               <props.Form class="space-y-8" autocomplete="off">
+
+               <SocialAuthBtn />
+
+               <hr class="mb-12 border-slate-300" />
+
+               <props.Form class="space-y-6" autocomplete="off">
                   <input type="hidden" autofocus name="redirectTo" value={params.redirectTo ?? "/"} />
 
                   <Input formHandler={formHandler} name="penName" label="Pen Name" placeholder="RicKol" />
@@ -83,6 +89,12 @@ export default function SignUpSection(props: SignUpProps) {
                      </Show>
                   </button>
                </props.Form>
+               <p class="text-slate-700 -mb-2 mt-4 p-2 md:text-slate-500 text-sm text-center">
+                  Already have an account?{" "}
+                  <A href="/login" class="hover:text-emerald-500 hover:underline">
+                     Login.
+                  </A>
+               </p>
             </div>
          </div>
       </main>
