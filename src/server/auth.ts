@@ -3,13 +3,15 @@ import type { User } from "@prisma/client"
 import { sessionStorage } from "~/utils/auth"
 import { Authenticator } from "@solid-auth/core"
 import { CredentialsStrategy } from "@solid-auth/credentials"
-import bcrypt from "bcrypt"
+import sha256 from "crypto-js/sha256"
 
 export const authenticator = new Authenticator<Omit<User, "password">>(sessionStorage)
 
 authenticator.use(
    new CredentialsStrategy(async ({ input }) => {
       const userExists = await db.user.findUnique({ where: { email: input.email } })
+
+      const pepper = "fkejrfhkierufgibvalkvhieurytilweirj" // Store it in the .env Later
 
       // SIGN UP CASE
       if (input.register) {
@@ -18,7 +20,9 @@ authenticator.use(
          }
 
          // Hashing password
-         const hashedPW = await bcrypt.hash(input.password, 10)
+         // const salt = Math.random().toString(32).slice(2);
+         const salt = input.email // store it in the DB Later user= {email, password, salt..}
+         const hashedPW = await sha256(input.password + salt + pepper).toString()
 
          // save the sign up user to the database
          const data = { email: input.email, password: hashedPW, penName: input.penName }
@@ -41,7 +45,10 @@ authenticator.use(
          }
 
          // Check Password
-         const isCorrectPassword = await bcrypt.compare(input.password, userExists.password)
+         // const salt = userExists.salt
+         const salt = input.email // store it in the DB Later user= {email, password, salt..}
+         const digestedInputPW = await sha256(input.password + salt + pepper).toString()
+         const isCorrectPassword = digestedInputPW === userExists.password
 
          if (!isCorrectPassword) {
             throw new Error("The email/Password combination is incorrect")
