@@ -2,22 +2,17 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider   = "prisma-client-js"
-  engineType = "binary"
+  provider        = "prisma-client-js"
+  previewFeatures = ["mongoDb"]
 }
 
-// datasource db {
-//   provider = "sqlite"
-//   url      = "file:./dev.db"
-// }
-
 datasource db {
-  provider = "postgresql"
-  url      = env("VITE_DATABASE_URL")
+  provider = "mongodb"
+  url      = env("DATABASE_URI")
 }
 
 model User {
-  id       String  @id @default(uuid())
+  id       String  @id @default(uuid()) @map("_id") @db.ObjectId
   email    String  @unique
   penName  String?
   password String?
@@ -27,7 +22,7 @@ model User {
 }
 
 model Story {
-  id          Int         @id @default(autoincrement())
+  id          String      @id @default(uuid()) @map("_id") @db.ObjectId
   slug        String?
   title       String
   manuscript  Chapter[]
@@ -42,45 +37,45 @@ model Story {
 }
 
 model Chapter {
-  id            Int      @id @default(autoincrement())
+  id            String   @id @default(uuid()) @map("_id") @db.ObjectId
   slug          String?
   content       String?
   chapter_notes Note[]
   story         Story    @relation(fields: [storyId], references: [id])
-  storyId       Int
+  storyId       String
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }
 
 model Place {
-  id          Int      @id @default(autoincrement())
+  id          String   @id @default(uuid()) @map("_id") @db.ObjectId
   slug        String?
   description String?
   story       Story    @relation(fields: [storyId], references: [id])
-  storyId     Int
+  storyId     String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
 
 model Character {
-  id          Int      @id @default(autoincrement())
+  id          String   @id @default(uuid()) @map("_id") @db.ObjectId
   slug        String?
   description String?
   story       Story    @relation(fields: [storyId], references: [id])
-  storyId     Int
+  storyId     String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
 
 model Note {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid()) @map("_id") @db.ObjectId
   content   String?
   author    User     @relation(fields: [authorId], references: [id])
   authorId  String
   story     Story?   @relation(fields: [storyId], references: [id])
-  storyId   Int?
+  storyId   String?
   chapter   Chapter? @relation(fields: [chapterId], references: [id])
-  chapterId Int?
+  chapterId String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

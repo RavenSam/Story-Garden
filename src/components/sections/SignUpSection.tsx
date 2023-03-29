@@ -40,7 +40,7 @@ export default function SignUpSection(props: SignUpProps) {
    return (
       <main class="min-h-screen flex items-center">
          <div class="grid grid-cols-1 md:grid-cols-2 w-full items-center max-w-[90rem] mx-auto">
-            <div class="relative max-h-screen overflow-hidden rounded-l-sm">
+            <div class="relative max-h-screen md:h-screen overflow-hidden rounded-l-sm">
                <div class="md:fade" />
                <img
                   src="/img/g-1.jpg"
