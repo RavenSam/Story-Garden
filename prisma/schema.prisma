@@ -12,7 +12,7 @@ datasource db {
 }
 
 model User {
-  id       String  @id @map("_id")
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
   email    String  @unique
   penName  String?
   password String?
@@ -22,7 +22,7 @@ model User {
 }
 
 model Story {
-  id          String      @id @map("_id")
+  id          String      @id @default(auto()) @map("_id") @db.ObjectId
   slug        String?
   title       String
   manuscript  Chapter[]
@@ -37,7 +37,7 @@ model Story {
 }
 
 model Chapter {
-  id            String   @id @map("_id")
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
   slug          String?
   content       String?
   chapter_notes Note[]
@@ -48,7 +48,7 @@ model Chapter {
 }
 
 model Place {
-  id          String   @id @map("_id")
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
   slug        String?
   description String?
   story       Story    @relation(fields: [storyId], references: [id])
@@ -58,7 +58,7 @@ model Place {
 }
 
 model Character {
-  id          String   @id @map("_id")
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
   slug        String?
   description String?
   story       Story    @relation(fields: [storyId], references: [id])
@@ -68,7 +68,7 @@ model Character {
 }
 
 model Note {
-  id        String   @id @map("_id")
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   content   String?
   author    User     @relation(fields: [authorId], references: [id])
   authorId  String
