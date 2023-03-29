@@ -73,7 +73,7 @@ export default function SignUpSection(props: SignUpProps) {
                <props.Form class="space-y-6" autocomplete="off">
                   <input type="hidden" autofocus name="redirectTo" value={params.redirectTo ?? "/"} />
 
-                  <Input formHandler={formHandler} name="penName" label="Pen Name" placeholder="RicKol" />
+                  <Input formHandler={formHandler} name="penName" label="Pen Name" placeholder="kody" />
 
                   <Input formHandler={formHandler} name="email" placeholder="kody66@mail.com" />
 

@@ -5,9 +5,14 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// datasource db {
+//   provider = "sqlite"
+//   url      = "file:./dev.db"
+// }
+
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("VITE_DATABASE_URL")
 }
 
 model User {
@@ -15,15 +20,66 @@ model User {
   email    String  @unique
   penName  String?
   password String?
-  books    Story[]
+  salt     String
+  stories  Story[]
+  notes    Note[]
 }
 
 model Story {
+  id          Int         @id @default(autoincrement())
+  slug        String?
+  title       String
+  manuscript  Chapter[]
+  places      Place[]
+  characters  Character[]
+  story_notes Note[]
+  published   Boolean     @default(false)
+  author      User        @relation(fields: [authorId], references: [id])
+  authorId    String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model Chapter {
+  id            Int      @id @default(autoincrement())
+  slug          String?
+  content       String?
+  chapter_notes Note[]
+  story         Story    @relation(fields: [storyId], references: [id])
+  storyId       Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Place {
+  id          Int      @id @default(autoincrement())
+  slug        String?
+  description String?
+  story       Story    @relation(fields: [storyId], references: [id])
+  storyId     Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Character {
+  id          Int      @id @default(autoincrement())
+  slug        String?
+  description String?
+  story       Story    @relation(fields: [storyId], references: [id])
+  storyId     Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Note {
   id        Int      @id @default(autoincrement())
-  title     String
-  published Boolean  @default(false)
+  content   String?
   author    User     @relation(fields: [authorId], references: [id])
   authorId  String
+  story     Story?   @relation(fields: [storyId], references: [id])
+  storyId   Int?
+  chapter   Chapter? @relation(fields: [chapterId], references: [id])
+  chapterId Int?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

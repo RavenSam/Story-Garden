@@ -34,6 +34,15 @@ export async function requireUserId(request: Request, redirectTo: string = new U
    return userId
 }
 
+export async function alreadyLogged(request: Request, redirectTo: string) {
+   const session = await getUserSession(request)
+   const user = session.get("user")
+   if (user) {
+      throw redirect(redirectTo)
+   }
+   return false
+}
+
 export async function createUserSession(userId: string, redirectTo: string) {
    const session = await sessionStorage.getSession()
    session.set("userId", userId)

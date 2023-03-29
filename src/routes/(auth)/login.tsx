@@ -1,21 +1,12 @@
-import { createRouteAction } from "solid-start"
-import { FormError } from "solid-start/data"
+import { createEffect, onMount } from "solid-js"
+import { createRouteAction, Navigate, useNavigate } from "solid-start"
+import { FormError, useRouteData } from "solid-start/data"
 import { createServerData$, redirect } from "solid-start/server"
 import LoginSection from "~/components/sections/LoginSection"
 import { authenticator } from "~/server/auth"
+import { alreadyLogged } from "~/server/db/session"
 import { authClient } from "~/utils/auth"
-
-export const routeData = () => {
-   return createServerData$(async (_, { request }) => {
-      const user = await authenticator.isAuthenticated(request)
-
-      if (user) {
-         throw redirect("/author/stories")
-      }
-
-      return {}
-   })
-}
+import { useSessionRefetch } from "~/utils/authProvider"
 
 function checkFields(form: FormData) {
    const email = form.get("email")
@@ -29,6 +20,18 @@ function checkFields(form: FormData) {
    return { email, password, redirectTo }
 }
 
+export const routeData = () => {
+   return createServerData$(async (_, { request }) => {
+      // const user = await authenticator.isAuthenticated(request)
+      // if (user) {
+      //    console.log(user)
+      //    throw redirect("/author/stories") // It doesn't work and I don't know why.
+      // }
+      // return {}
+
+      return await alreadyLogged(request, "/") // Not working either.
+   })
+}
 export default function Login() {
    const [loggingIn, { Form }] = createRouteAction(async (form: FormData) => {
       const fields = checkFields(form)
