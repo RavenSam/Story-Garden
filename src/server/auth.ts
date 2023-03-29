@@ -20,12 +20,11 @@ authenticator.use(
          }
 
          // Hashing password
-         // const salt = Math.random().toString(32).slice(2);
-         const salt = input.email // store it in the DB Later user= {email, password, salt..}
+         const salt = Math.random().toString(32).slice(2)
          const hashedPW = await sha256(input.password + salt + pepper).toString()
 
          // save the sign up user to the database
-         const data = { email: input.email, password: hashedPW, penName: input.penName }
+         const data = { email: input.email, password: hashedPW, penName: input.penName, salt }
          const user = await db.user.create({ data })
 
          if (!user) {
@@ -45,8 +44,7 @@ authenticator.use(
          }
 
          // Check Password
-         // const salt = userExists.salt
-         const salt = input.email // store it in the DB Later user= {email, password, salt..}
+         const salt = userExists.salt
          const digestedInputPW = await sha256(input.password + salt + pepper).toString()
          const isCorrectPassword = digestedInputPW === userExists.password
 
