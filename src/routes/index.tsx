@@ -2,16 +2,16 @@ import { createServerData$ } from "solid-start/server"
 import Input from "~/components/ui/Input"
 import { db } from "~/server/db"
 
-// export const routeData = () => {
-//    return createServerData$(async (_, { request }) => {
-//       try {
-//          const user = await db.user.create({ data: { email: "kody@mail.com", penName: "kody", salt: "wowo" } })
-//          console.log(user)
-//       } catch (error) {
-//          console.log(error)
-//       }
-//    })
-// }
+export const routeData = () => {
+   return createServerData$(async (_, { request }) => {
+      try {
+         const user = await db.user.create({ data: { email: "kody@mail.com", penName: "kody", salt: "wowo" } })
+         console.log(user)
+      } catch (error) {
+         console.log(error)
+      }
+   })
+}
 
 export default function Home() {
    return (

@@ -2,8 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["mongoDb"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -31,7 +30,7 @@ model Story {
   story_notes Note[]
   published   Boolean     @default(false)
   author      User        @relation(fields: [authorId], references: [id])
-  authorId    String
+  authorId    String      @db.ObjectId
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 }
@@ -42,7 +41,7 @@ model Chapter {
   content       String?
   chapter_notes Note[]
   story         Story    @relation(fields: [storyId], references: [id])
-  storyId       String
+  storyId       String   @db.ObjectId
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }
@@ -52,7 +51,7 @@ model Place {
   slug        String?
   description String?
   story       Story    @relation(fields: [storyId], references: [id])
-  storyId     String
+  storyId     String   @db.ObjectId
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -62,7 +61,7 @@ model Character {
   slug        String?
   description String?
   story       Story    @relation(fields: [storyId], references: [id])
-  storyId     String
+  storyId     String   @db.ObjectId
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -71,11 +70,11 @@ model Note {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   content   String?
   author    User     @relation(fields: [authorId], references: [id])
-  authorId  String
+  authorId  String   @db.ObjectId
   story     Story?   @relation(fields: [storyId], references: [id])
-  storyId   String?
+  storyId   String?  @db.ObjectId
   chapter   Chapter? @relation(fields: [chapterId], references: [id])
-  chapterId String?
+  chapterId String?  @db.ObjectId
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
