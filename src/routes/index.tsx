@@ -25,10 +25,10 @@ export default function Home() {
                   </p>
 
                   <div class="flex items-center pt-6 space-x-2">
-                     <A href="/sign-up" class="btn btn-ghost-primary btn-pill">
-                        Join Discord
+                     <A href="/" class="btn btn-ghost-primary btn-pill">
+                        Join our Discord
                      </A>
-                     <A href="/" title="Register now, it's free" class="btn btn-solid-primary btn-pill">
+                     <A href="/sign-up" title="Register now, it's free" class="btn btn-solid-primary btn-pill">
                         Sign up now
                      </A>
                   </div>

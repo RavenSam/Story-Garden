@@ -22,17 +22,17 @@ function checkFields(form: FormData) {
    return { penName, email, password, redirectTo, register: true }
 }
 
-export const routeData = () => {
-   return createServerData$(async (_, { request }) => {
-      const user = await authenticator.isAuthenticated(request)
+// export const routeData = () => {
+//    return createServerData$(async (_, { request }) => {
+//       const user = await authenticator.isAuthenticated(request)
 
-      if (user) {
-         throw redirect("/author/stories")
-      }
+//       if (user) {
+//          throw redirect("/author/stories")
+//       }
 
-      return {}
-   })
-}
+//       return {}
+//    })
+// }
 
 export default function SignUp() {
    const [signingIn, { Form }] = createRouteAction(async (form: FormData) => {

@@ -50,12 +50,11 @@ export default function SignUpSection(props: SignUpProps) {
 
                <div class="absolute inset-0 z-[9] flex items-center p-8 text-white bg-black/50">
                   <div class="space-y-4">
-                     <h2 class="text-5xl font-extrabold [text-shadow:_0_1px_0_rgb(0_0_0_/60%)]">
-                        The brain's strength <br /> lies in <span class="text-emerald-500 ">making</span> ideas, <br />
-                        not in <span class="text-emerald-500 ">storing</span> them.
+                     <h2 class="text-5xl font-extrabold capitalize [text-shadow:_0_1px_0_rgb(0_0_0_/60%)]">
+                        Sign up and Bring your <span class="text-emerald-500">story!</span> to life
                      </h2>
                      <p class="text-xl text-slate-100 font-medium pb-20 [text-shadow:_0_1px_0_rgb(0_0_0_/_40%)]">
-                        Leave that to us.
+                        Start Writing Your Story Today.
                      </p>
                   </div>
                </div>
