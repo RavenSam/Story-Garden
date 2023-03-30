@@ -17,6 +17,25 @@
          transparent 100%
       );
    }
+
+   .fade-left {
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      z-index: 10;
+      background: -webkit-linear-gradient(left, rgb(255, 255, 255) 0%, rgba(255, 255, 255, 0.13) 20%, transparent 100%);
+   }
+
+   .fade-all {
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      z-index: 10;
+      background: -webkit-linear-gradient(right, rgb(255, 255, 255) 0%, rgba(255, 255, 255, 0.13) 5%, transparent 100%),
+         -webkit-linear-gradient(left, rgb(255, 255, 255) 0%, rgba(255, 255, 255, 0.13) 5%, transparent 100%),
+         -webkit-linear-gradient(bottom, rgb(255, 255, 255) 0%, rgba(255, 255, 255, 0.13) 5%, transparent 100%),
+         -webkit-linear-gradient(top, rgb(255, 255, 255) 0%, rgba(255, 255, 255, 0.13) 5%, transparent 100%);
+   }
 }
 
 @layer components {

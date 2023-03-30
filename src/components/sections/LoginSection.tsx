@@ -5,7 +5,7 @@ import toast from "solid-toast"
 import { useFormHandler } from "solid-form-handler"
 import { zodSchema } from "solid-form-handler/zod"
 import { z } from "zod"
-import SocialAuthBtn from "./SocialAuthBtn"
+import SocialAuthBtn from "../flow/SocialAuthBtn"
 
 type LoggingInTypes = {
    pending: boolean
