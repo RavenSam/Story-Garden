@@ -1,7 +1,7 @@
-import { User } from "@prisma/client"
 import { BiRegularLogOut, BiSolidLogOut } from "solid-icons/bi"
 import { Resource, Show } from "solid-js"
 import { A } from "solid-start"
+import { UserSession } from "types"
 import { authClient } from "~/utils/auth"
 
 const LogOut = () => {
@@ -14,7 +14,7 @@ const LogOut = () => {
 }
 
 interface TopNavProps {
-   user: Resource<Omit<User, "password"> | undefined>
+   user: Resource<UserSession | undefined>
 }
 
 export default function TopNav(props: TopNavProps) {

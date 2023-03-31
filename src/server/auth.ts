@@ -1,11 +1,11 @@
 import { db } from "~/server/db"
-import type { User } from "@prisma/client"
 import { sessionStorage } from "~/utils/auth"
 import { Authenticator } from "@solid-auth/core"
 import { CredentialsStrategy } from "@solid-auth/credentials"
 import sha256 from "crypto-js/sha256"
+import { UserSession } from "types"
 
-export const authenticator = new Authenticator<Omit<User, "password" | "salt">>(sessionStorage)
+export const authenticator = new Authenticator<UserSession>(sessionStorage)
 
 authenticator.use(
    new CredentialsStrategy(async ({ input }) => {

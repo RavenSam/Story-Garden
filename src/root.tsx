@@ -4,7 +4,6 @@ import { Body, ErrorBoundary, FileRoutes, Head, Html, Meta, Routes, Scripts, Tit
 import "../styles/root.css"
 import { Toaster } from "solid-toast"
 import SolidNProgress from "./components/ui/SolidNProgress"
-import { AuthProvider } from "~/utils/authProvider"
 
 export default function Root() {
    return (
@@ -15,19 +14,17 @@ export default function Root() {
             <Meta name="viewport" content="width=device-width, initial-scale=1" />
          </Head>
          <Body>
-            <AuthProvider>
-               <Toaster containerClassName="toaster" />
+            <Toaster containerClassName="toaster" />
 
-               <SolidNProgress />
+            <SolidNProgress />
 
-               <ErrorBoundary>
-                  <Suspense fallback={<div>Loading</div>}>
-                     <Routes>
-                        <FileRoutes />
-                     </Routes>
-                  </Suspense>
-               </ErrorBoundary>
-            </AuthProvider>
+            <ErrorBoundary>
+               <Suspense fallback={<div>Loading</div>}>
+                  <Routes>
+                     <FileRoutes />
+                  </Routes>
+               </Suspense>
+            </ErrorBoundary>
             <Scripts />
          </Body>
       </Html>

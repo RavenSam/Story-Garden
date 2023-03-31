@@ -1,38 +1,25 @@
-import { createEffect, ParentComponent, Show } from "solid-js"
-import { A, FormProps, useParams } from "solid-start"
+import { createEffect, Show } from "solid-js"
+import { A, useParams } from "solid-start"
 import Input from "~/components/ui/Input"
 import toast from "solid-toast"
 import { useFormHandler } from "solid-form-handler"
 import { zodSchema } from "solid-form-handler/zod"
 import { z } from "zod"
 import SocialAuthBtn from "../flow/SocialAuthBtn"
-
-type LoggingInTypes = {
-   pending: boolean
-   input?: FormData | undefined
-   result?: Response | undefined
-   error?: any
-   clear: () => void
-   retry: () => void
-}
-
-interface LoginProps {
-   loggingIn: LoggingInTypes
-   Form: ParentComponent<FormProps>
-}
+import { ActionProps } from "types"
 
 export const userSchema = z.object({
    email: z.string().nonempty("Your email is required.").email("Must be a valid email."),
    password: z.string().nonempty("A password is required.").min(8, "Too short."),
 })
 
-export default function LoginSection(props: LoginProps) {
+export default function LoginSection(props: ActionProps) {
    const formHandler = useFormHandler(zodSchema(userSchema))
    const params = useParams()
 
    createEffect(() => {
-      if (props.loggingIn?.error?.message) {
-         toast.error(props.loggingIn?.error?.message, { className: "error" })
+      if (props.enrolling?.error?.message) {
+         toast.error(props.enrolling?.error?.message, { className: "error" })
       }
    })
 
@@ -78,9 +65,9 @@ export default function LoginSection(props: LoginProps) {
                   <button
                      type="submit"
                      class="btn btn-solid-primary btn-pill min-w-[8rem] py-2.5 mx-auto"
-                     disabled={formHandler.isFormInvalid() || props.loggingIn.pending}
+                     disabled={formHandler.isFormInvalid() || props.enrolling.pending}
                   >
-                     <Show when={props.loggingIn.pending} fallback="Login">
+                     <Show when={props.enrolling.pending} fallback="Login">
                         Submitting
                      </Show>
                   </button>

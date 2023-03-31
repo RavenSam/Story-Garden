@@ -1,13 +1,13 @@
 import { useFormHandler } from "solid-form-handler"
 import { zodSchema } from "solid-form-handler/zod"
 import { TiPlus } from "solid-icons/ti"
-import { createEffect, createSignal, ParentComponent, Show } from "solid-js"
-import { FormProps } from "solid-start"
+import { createEffect, createSignal, onMount, Show } from "solid-js"
 import { z } from "zod"
 import Modal from "~/components/ui/Modal"
 import Input, { Textarea } from "~/components/ui/Input"
 import { Load } from "../ui/Loading"
 import toast from "solid-toast"
+import { ActionProps } from "types"
 
 const [isOpen, setIsOpen] = createSignal(false)
 
@@ -15,22 +15,12 @@ export const storySchema = z.object({
    title: z.string().nonempty("The story needs a title.").max(100, "Story title should be below 100 characters"),
 })
 
-type EnrollingTypes = {
-   pending: boolean
-   input?: FormData | undefined
-   result?: any
-   error?: any
-   clear: () => void
-   retry: () => void
-}
-
-interface ActionProps {
-   enrolling: EnrollingTypes
-   Form: ParentComponent<FormProps>
-}
+let inputRef: HTMLInputElement
 
 const CreateForm = (props: ActionProps) => {
    const formHandler = useFormHandler(zodSchema(storySchema))
+
+   onMount(() => inputRef.focus())
 
    createEffect(() => {
       if (props.enrolling?.result) {
@@ -47,7 +37,7 @@ const CreateForm = (props: ActionProps) => {
 
    return (
       <props.Form class="pt-6 space-y-6 relative">
-         <Input formHandler={formHandler} name="title" />
+         <Input ref={inputRef} formHandler={formHandler} name="title" />
 
          <Textarea rows={5} name="description" />
 

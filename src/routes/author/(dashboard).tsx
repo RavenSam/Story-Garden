@@ -1,8 +1,6 @@
 import { FormError } from "solid-start"
 import { createServerAction$ } from "solid-start/server"
-import toast from "solid-toast"
-import CreateStory from "~/components/flow/CreateStory"
-import CommingSoon from "~/components/ui/CommingSoon"
+import DashboardSection from "~/components/sections/DashboardSection"
 import { createStory } from "~/server/db/story"
 
 function checkFields(form: FormData) {
@@ -25,10 +23,5 @@ export default function Dashboard() {
          console.log(error)
       }
    })
-   return (
-      <>
-         <CreateStory Form={Form} enrolling={enrolling} />
-         <CommingSoon title="Dashboard" />
-      </>
-   )
+   return <DashboardSection />
 }

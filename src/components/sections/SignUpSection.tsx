@@ -1,25 +1,12 @@
-import { createEffect, ParentComponent, Show } from "solid-js"
-import { A, FormProps, useParams } from "solid-start"
+import { createEffect, Show } from "solid-js"
+import { A, useParams } from "solid-start"
 import Input from "~/components/ui/Input"
 import toast from "solid-toast"
 import { useFormHandler } from "solid-form-handler"
 import { zodSchema } from "solid-form-handler/zod"
 import { z } from "zod"
 import SocialAuthBtn from "../flow/SocialAuthBtn"
-
-type SigningInTpes = {
-   pending: boolean
-   input?: FormData | undefined
-   result?: Response | undefined
-   error?: any
-   clear: () => void
-   retry: () => void
-}
-
-interface SignUpProps {
-   signingIn: SigningInTpes
-   Form: ParentComponent<FormProps>
-}
+import { ActionProps } from "types"
 
 export const userSchema = z.object({
    penName: z.string().nonempty("A pen name is required.").min(3, "Your pen name must be at least 3 characters long."),
@@ -27,13 +14,13 @@ export const userSchema = z.object({
    password: z.string().nonempty("A password is required.").min(8, "Too short."),
 })
 
-export default function SignUpSection(props: SignUpProps) {
+export default function SignUpSection(props: ActionProps) {
    const formHandler = useFormHandler(zodSchema(userSchema))
    const params = useParams()
 
    createEffect(() => {
-      if (props.signingIn?.error?.message) {
-         toast.error(props.signingIn?.error?.message, { className: "error" })
+      if (props.enrolling?.error?.message) {
+         toast.error(props.enrolling?.error?.message, { className: "error" })
       }
    })
 
@@ -81,9 +68,9 @@ export default function SignUpSection(props: SignUpProps) {
                   <button
                      type="submit"
                      class="btn btn-solid-primary btn-pill min-w-[8rem] py-2.5 mx-auto"
-                     disabled={formHandler.isFormInvalid() || props.signingIn.pending}
+                     disabled={formHandler.isFormInvalid() || props.enrolling.pending}
                   >
-                     <Show when={props.signingIn.pending} fallback="Sign up">
+                     <Show when={props.enrolling.pending} fallback="Sign up">
                         Submitting
                      </Show>
                   </button>
