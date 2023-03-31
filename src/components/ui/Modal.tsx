@@ -43,6 +43,7 @@ export default function Modal(props: ModalProps): JSX.Element {
                         &#8203;
                      </span>
                      <TransitionChild
+                        class="w-full"
                         enter="ease-out duration-300"
                         enterFrom="translate-y-6  opacity-0 "
                         enterTo="translate-y-0 opacity-100 "
@@ -50,7 +51,7 @@ export default function Modal(props: ModalProps): JSX.Element {
                         leaveFrom="translate-y-0 opacity-100 "
                         leaveTo="translate-y-6 opacity-0 "
                      >
-                        <DialogPanel class="relative inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+                        <DialogPanel class="relative block max-h-screen mx-auto overflow-y-scroll w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
                            <button
                               onclick={closeModal}
                               title="Close"

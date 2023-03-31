@@ -20,18 +20,18 @@ function checkFields(form: FormData) {
    return { email, password, redirectTo }
 }
 
-// export const routeData = () => {
-//    return createServerData$(async (_, { request }) => {
-//       // const user = await authenticator.isAuthenticated(request)
-//       // if (user) {
-//       //    console.log(user)
-//       //    throw redirect("/author/stories") // It doesn't work and I don't know why.
-//       // }
-//       // return {}
+export const routeData = () => {
+   return createServerData$(async (_, { request }) => {
+      const user = await authenticator.isAuthenticated(request)
+      if (user) {
+         console.log(user)
+         throw redirect("/author/stories") // It doesn't work and I don't know why.
+      }
+      return {}
 
-//       return await alreadyLogged(request, "/") // Not working either.
-//    })
-// }
+      // return await alreadyLogged(request, "/") // Not working either.
+   })
+}
 export default function Login() {
    const [loggingIn, { Form }] = createRouteAction(async (form: FormData) => {
       const fields = checkFields(form)

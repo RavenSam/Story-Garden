@@ -1,26 +1,28 @@
 import { User } from "@prisma/client"
-import { createEffect, Match, Resource, Switch } from "solid-js"
-import { useSession } from "~/utils/authProvider"
+import { BiRegularLogOut, BiSolidLogOut } from "solid-icons/bi"
+import { Resource, Show } from "solid-js"
+import { A } from "solid-start"
+import { authClient } from "~/utils/auth"
+
+const LogOut = () => {
+   const logout = () => authClient.logout({ redirectTo: "/login" })
+   return (
+      <button aria-label="Log out" onclick={logout} class="btn btn-ghost-danger btn-icon">
+         <BiRegularLogOut />
+      </button>
+   )
+}
 
 interface TopNavProps {
    user: Resource<Omit<User, "password"> | undefined>
 }
 
 export default function TopNav(props: TopNavProps) {
-   const session = useSession()
-
    return (
-      <nav class="w-full p-3 bg-gray-300">
-         <div class="p-4 border border-slate-300 rounded-xl">{props.user.name}</div>
-
-         <Switch fallback={<h3>Not Logged In</h3>}>
-            <Match when={session().loading}>
-               <h3 class="text-red-500 text-lg">Loading...</h3>
-            </Match>
-            <Match when={session().user} keyed>
-               {(user) => <h3 class="text-red-500 text-lg">{user.penName}</h3>}
-            </Match>
-         </Switch>
+      <nav class="w-full p-2 bg-white/70 flex items-center justify-end">
+         <Show when={!props.user()} fallback={<LogOut />}>
+            <A href="/login">Log in</A>
+         </Show>
       </nav>
    )
 }
