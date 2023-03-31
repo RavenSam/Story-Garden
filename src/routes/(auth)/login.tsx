@@ -6,7 +6,6 @@ import LoginSection from "~/components/sections/LoginSection"
 import { authenticator } from "~/server/auth"
 import { alreadyLogged } from "~/server/db/session"
 import { authClient } from "~/utils/auth"
-import { useSessionRefetch } from "~/utils/authProvider"
 
 function checkFields(form: FormData) {
    const email = form.get("email")
@@ -33,7 +32,7 @@ export const routeData = () => {
    })
 }
 export default function Login() {
-   const [loggingIn, { Form }] = createRouteAction(async (form: FormData) => {
+   const [enrolling, { Form }] = createRouteAction(async (form: FormData) => {
       const fields = checkFields(form)
 
       try {
@@ -49,5 +48,5 @@ export default function Login() {
       }
    })
 
-   return <LoginSection Form={Form} loggingIn={loggingIn} />
+   return <LoginSection Form={Form} enrolling={enrolling} />
 }

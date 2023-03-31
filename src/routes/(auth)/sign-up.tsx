@@ -35,7 +35,7 @@ function checkFields(form: FormData) {
 // }
 
 export default function SignUp() {
-   const [signingIn, { Form }] = createRouteAction(async (form: FormData) => {
+   const [enrolling, { Form }] = createRouteAction(async (form: FormData) => {
       const fields = checkFields(form)
 
       try {
@@ -51,5 +51,5 @@ export default function SignUp() {
       }
    })
 
-   return <SignUpSection Form={Form} signingIn={signingIn} />
+   return <SignUpSection Form={Form} enrolling={enrolling} />
 }
