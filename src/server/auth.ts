@@ -5,7 +5,7 @@ import { Authenticator } from "@solid-auth/core"
 import { CredentialsStrategy } from "@solid-auth/credentials"
 import sha256 from "crypto-js/sha256"
 
-export const authenticator = new Authenticator<Omit<User, "password">>(sessionStorage)
+export const authenticator = new Authenticator<Omit<User, "password" | "salt">>(sessionStorage)
 
 authenticator.use(
    new CredentialsStrategy(async ({ input }) => {

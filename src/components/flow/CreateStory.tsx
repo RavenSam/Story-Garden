@@ -1,16 +1,18 @@
 import { useFormHandler } from "solid-form-handler"
 import { zodSchema } from "solid-form-handler/zod"
 import { TiPlus } from "solid-icons/ti"
-import { createSignal, ParentComponent, Show } from "solid-js"
+import { createEffect, createSignal, ParentComponent, Show } from "solid-js"
 import { FormProps } from "solid-start"
 import { z } from "zod"
 import Modal from "~/components/ui/Modal"
 import Input, { Textarea } from "~/components/ui/Input"
+import { Load } from "../ui/Loading"
+import toast from "solid-toast"
 
-const [isOpen, setIsOpen] = createSignal(true)
+const [isOpen, setIsOpen] = createSignal(false)
 
 export const storySchema = z.object({
-   title: z.string().nonempty("The story needs a title.").max(100, ""),
+   title: z.string().nonempty("The story needs a title.").max(100, "Story title should be below 100 characters"),
 })
 
 type EnrollingTypes = {
@@ -30,8 +32,21 @@ interface ActionProps {
 const CreateForm = (props: ActionProps) => {
    const formHandler = useFormHandler(zodSchema(storySchema))
 
+   createEffect(() => {
+      if (props.enrolling?.result) {
+         toast.success("New story created", { className: "success" })
+         setIsOpen(false)
+      }
+   })
+
+   createEffect(() => {
+      if (props.enrolling?.error?.message) {
+         toast.error(props.enrolling?.error?.message, { className: "error" })
+      }
+   })
+
    return (
-      <props.Form class="pt-6 space-y-6">
+      <props.Form class="pt-6 space-y-6 relative">
          <Input formHandler={formHandler} name="title" />
 
          <Textarea rows={5} name="description" />
@@ -51,6 +66,10 @@ const CreateForm = (props: ActionProps) => {
                </Show>
             </button>
          </div>
+
+         <Show when={props.enrolling.pending}>
+            <Load />
+         </Show>
       </props.Form>
    )
 }
@@ -61,10 +80,10 @@ export default function CreateStory(props: ActionProps) {
          <button type="button" onClick={() => setIsOpen(true)} class="btn btn-solid-primary btn-pill">
             <TiPlus />
 
-            <span class="font-medium">Create a story</span>
+            <span class="font-medium">New Story</span>
          </button>
 
-         <Modal setIsOpen={setIsOpen} isOpen={isOpen} title="Create a story">
+         <Modal setIsOpen={setIsOpen} isOpen={isOpen} title="Create a new story">
             <CreateForm Form={props.Form} enrolling={props.enrolling} />
          </Modal>
       </>

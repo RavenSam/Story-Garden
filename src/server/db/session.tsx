@@ -1,27 +1,28 @@
 import { redirect } from "solid-start/server"
 import { sessionStorage } from "~/utils/auth"
 import { db } from "~/server/db"
+import { User } from "@prisma/client"
 
 type LoginForm = {
    email: string
    password: string
 }
 
-export async function register({ email, password }: LoginForm) {
-   return db.user.create({
-      data: { email, password },
-   })
-}
+// export async function register({ email, password }: LoginForm) {
+//    return db.user.create({
+//       data: { email, password },
+//    })
+// }
 
 export function getUserSession(request: Request) {
    return sessionStorage.getSession(request.headers.get("Cookie"))
 }
 
-export async function getUserId(request: Request) {
+export async function getUser(request: Request) {
    const session = await getUserSession(request)
-   const userId = session.get("userId")
-   if (!userId || typeof userId !== "string") return null
-   return userId
+   const user = session.get("user") as User
+   if (!user) return null
+   return user
 }
 
 export async function requireUserId(request: Request, redirectTo: string = new URL(request.url).pathname) {

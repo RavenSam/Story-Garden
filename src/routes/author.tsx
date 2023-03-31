@@ -6,7 +6,7 @@ import { authenticator } from "~/server/auth"
 export const routeData = () => {
    return createServerData$(async (_, { request }) => {
       const user = await authenticator.isAuthenticated(request)
-      console.log(user)
+      // console.log(user)
       if (!user) {
          throw redirect("/login")
       }

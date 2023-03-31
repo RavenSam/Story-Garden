@@ -1,27 +1,29 @@
-import { createRouteAction, FormError } from "solid-start"
+import { FormError } from "solid-start"
 import { createServerAction$ } from "solid-start/server"
+import toast from "solid-toast"
 import CreateStory from "~/components/flow/CreateStory"
 import CommingSoon from "~/components/ui/CommingSoon"
-import { db } from "~/server/db"
+import { createStory } from "~/server/db/story"
 
 function checkFields(form: FormData) {
    const title = form.get("title")
    const description = form.get("description")
 
-   if (typeof title !== "string" && typeof description !== "string") {
-      throw new FormError(`Form not submitted correctly.`)
+   if (typeof title === "string" && typeof description === "string") {
+      return { title, description }
    }
-
-   return { title, description }
+   throw new FormError(`Form not submitted correctly.`)
 }
 
 export default function Dashboard() {
-   const [enrolling, { Form }] = createServerAction$(async (form: FormData) => {
+   const [enrolling, { Form }] = createServerAction$(async (form: FormData, { request }) => {
       const fields = await checkFields(form)
-
-      db.story.create({ data: { title: fields.title } })
-
-      return { fields }
+      try {
+         const story = await createStory(request, fields)
+         return { story }
+      } catch (error: any) {
+         console.log(error)
+      }
    })
    return (
       <>

@@ -32,7 +32,7 @@ db.$use(async (params, next) => {
          args: { data },
       } = params
       // Check if slug exists by `findUnique` (did not test)
-      data.slug = slugify(`${data.name}`, { lower: true, strict: true, remove: /[*+~.()'"!:@]/g })
+      data.slug = slugify(`${data.title}`, { lower: true, strict: true, remove: /[*+~.()'"!:@]/g })
    }
    const result = await next(params)
    return result
