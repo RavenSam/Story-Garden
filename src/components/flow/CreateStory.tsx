@@ -38,7 +38,6 @@ const CreateForm = (props: ActionProps) => {
    createEffect(() => {
       if (props.enrolling?.result) {
          toast.success("New story created", { className: "success" })
-         inputRef.value = ""
          setIsOpen(false)
       }
    })
@@ -101,6 +100,7 @@ export default function CreateStory(props: { button?: boolean }) {
       <>
          <Show when={!props.button} fallback={CreateButton}>
             <button
+               type="button"
                onClick={() => setIsOpen(true)}
                aria-label="create a strory"
                class="group bg-slate-400/30 border rounded-xl flex items-center justify-center"

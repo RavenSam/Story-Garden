@@ -28,7 +28,7 @@ export const RecentStories = ({ stories }: { stories: Story[] }) => {
          <h2 class="text-lg font-bold text-slate-700 py-4">Recently Updated</h2>
 
          <div class="">
-            <div class="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-4 lg:max-w-[80%]">
+            <div class="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] lg:grid-cols-5 gap-4">
                <CreateStory />
 
                <For each={stories.slice(0, COUNT)}>{(story) => <StoryCard story={story} />}</For>
