@@ -38,6 +38,7 @@ const CreateForm = (props: ActionProps) => {
    createEffect(() => {
       if (props.enrolling?.result) {
          toast.success("New story created", { className: "success" })
+         props.enrolling?.clear()
          setIsOpen(false)
       }
    })
