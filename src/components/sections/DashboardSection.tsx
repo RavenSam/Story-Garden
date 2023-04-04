@@ -5,12 +5,15 @@
 // 4. Consistency: Reward authors for consistently hitting their writing goals by assigning them a rating based on their ability to meet their word count targets over a long period of time.
 // 5. Word Count Milestones: Similar to the word count ranks you mentioned earlier, but with specific milestones along the way. For example, reaching 10,000 words, 50,000 words, 100,000 words, etc.
 
+import Books from "~/components/flow/Books"
+
 export default function DashboardSection() {
    return (
-      <div>
-         <h1 class="text-4xl md:text-5xl font-extrabold">Dashboard</h1>
-         <hr />
-         <h2 class="text-3xl md:text-4xl font-bold text-slate-800">Recent Updated</h2>
+      <div class="p-4">
+         <h1 class="text-3xl text-slate-500 font-extrabold ">Dashboard</h1>
+         <hr class="border-emerald-500 border-2 rounded-full w-1/5 my-4" />
+         <h2 class="text-lg font-bold text-slate-700">Recently Updated</h2>
+         <Books />
       </div>
    )
 }

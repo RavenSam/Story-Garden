@@ -1,7 +1,7 @@
 import { For, createSignal, Show, JSXElement, onMount, createEffect, onCleanup } from "solid-js"
 import { A, useLocation, useParams } from "solid-start"
 import { IconTypes } from "solid-icons"
-import { TiHomeOutline, TiDocument, TiUserOutline, TiThLargeOutline, TiChevronRight } from "solid-icons/ti"
+import { TiDocument, TiUserOutline, TiThLargeOutline, TiChevronRight, TiLocation, TiNotes } from "solid-icons/ti"
 import { HiSolidMenuAlt2 } from "solid-icons/hi"
 import EditorSettingsModal from "~/components/flow/EditorSettings"
 
@@ -19,24 +19,16 @@ const SIDENAV_MAX_WIDTH = 240
 const SIDENAV_MIN_WIDTH = 64
 
 const navList: ListType[] = [
-   { name: "Home", icon: TiHomeOutline, href: "/", childrenList: [] },
-   { name: "Dashboard", icon: TiThLargeOutline, href: "/", childrenList: [] },
-   {
-      name: "Manuscript",
-      icon: TiDocument,
-      href: "/",
-      childrenList: [
-         { name: "Chapter 1", href: "manuscript/chapter-1" },
-         { name: "Chapter 2", href: "manuscript/chapter-2" },
-         { name: "Chapter 3", href: "manuscript/chapter-3" },
-         { name: "Chapter 4", href: "manuscript/chapter-4" },
-      ],
-   },
-   { name: "Characters", icon: TiUserOutline, href: "/", childrenList: [] },
+   { name: "Dashboard", icon: TiThLargeOutline, href: "/author/", childrenList: [] },
+   { name: "Stories", icon: TiDocument, href: "/author/stories", childrenList: [] },
+   { name: "Characters", icon: TiUserOutline, href: "/author/characters", childrenList: [] },
+   { name: "Locations", icon: TiLocation, href: "/author/locations", childrenList: [] },
+   { name: "My Notes", icon: TiNotes, href: "/author/notes", childrenList: [] },
 ]
 
 const SideLink = ({ item }: { item: ListType }) => {
    const [openSubMenu, setOpenSubMenu] = createSignal(false)
+   const location = useLocation()
    // const [isShown, setIsShown] = createSignal(false)
 
    const hasChildren = item.childrenList.length
@@ -48,9 +40,10 @@ const SideLink = ({ item }: { item: ListType }) => {
          <div
             // onMouseEnter={() => hasChildren && !open() && setIsShown(true)}
             // onMouseLeave={() => hasChildren && !open() && setIsShown(false)}
-            class="flex items-center rounded-xl text-slate-700 hover:text-black hover:bg-slate-200"
+            class="flex items-center rounded-xl text-slate-300 hover:text-white hover:bg-white/10"
+            classList={{ "btn-gradient shadow-md": item.href === location.pathname }}
          >
-            <A href={item.href} class="flex items-center w-full ">
+            <A href={item.href} class="flex items-center w-full">
                <span class="!w-12 !h-12 flex items-center justify-center text-xl">
                   <item.icon />
                </span>
@@ -62,7 +55,7 @@ const SideLink = ({ item }: { item: ListType }) => {
             <Show when={(hasChildren && open()) || (hasChildren && mobileScreen())}>
                <button
                   onClick={toggleSubMenu}
-                  class={` ${openSubMenu() ? "-rotate-90" : "rotate-90"} px-3 text-xl transition-all`}
+                  class={` ${openSubMenu() ? "-rotate-90" : "rotate-90"} px-3 text-base transition-all`}
                >
                   <TiChevronRight />
                </button>
@@ -95,7 +88,7 @@ const SubMenu = ({ item }: { item: ListType }) => {
       <For each={item.childrenList}>
          {(el) => (
             <li>
-               <A href={el.href} class="rounded-xl text-slate-700 block hover:text-black hover:bg-slate-200 px-3 py-1">
+               <A href={el.href} class="rounded-xl block px-3 py-1 text-slate-300 hover:text-white hover:bg-white/10">
                   {el.name}
                </A>
             </li>
@@ -137,7 +130,7 @@ export default function StorySideBar(props: SideBarProps) {
                "max-width": SIDENAV_MAX_WIDTH + "px",
                transform: mobileScreen() ? (open() ? "translateX(0)" : "translateX(-100%)") : "translateX(0)",
             }}
-            class="fixed left-0 top-0 bottom-0 bg-white p-2 transition-all z-[15]"
+            class="fixed left-0 top-0 bottom-0 bg-slate-800 p-2 transition-all z-[15]"
          >
             <nav class="space-y-1 flex flex-col h-full pt-20">
                <For each={navList}>{(item) => <SideLink item={item} />}</For>

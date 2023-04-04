@@ -56,6 +56,10 @@
 }
 
 @layer components {
+   .btn-gradient {
+      @apply !text-white !bg-gradient-to-br from-emerald-500 to-emerald-400;
+   }
+
    .btn {
       @apply space-x-2 focus-visible:outline-none shrink-0 relative  transition-all font-semibold border-none text-center flex items-center justify-center cursor-pointer outline-none disabled:opacity-30 disabled:pointer-events-none 
       after:rounded-xl after:outline after:outline-emerald-500 after:outline-offset-4 focus-visible:after:block;
@@ -201,4 +205,15 @@
 
 .tollbar-sticky-bottom .dropdown {
    bottom: 3rem;
+}
+
+/* For Webkit-based browsers (Chrome, Safari and Opera) */
+.scrollbar-hide::-webkit-scrollbar {
+   display: none;
+}
+
+/* For IE, Edge and Firefox */
+.scrollbar-hide {
+   -ms-overflow-style: none; /* IE and Edge */
+   scrollbar-width: none; /* Firefox */
 }

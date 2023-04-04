@@ -24,7 +24,7 @@ export const routeData = () => {
       const user = await authenticator.isAuthenticated(request)
       if (user) {
          console.log(user)
-         throw redirect("/author/stories") // It doesn't work and I don't know why.
+         throw redirect("/author") // It doesn't work and I don't know why.
       }
       return {}
 

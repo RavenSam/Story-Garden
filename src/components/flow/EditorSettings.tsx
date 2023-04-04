@@ -40,18 +40,17 @@ const RadiosCards = (props: RadioProps) => {
    )
 
    return (
-      <div class="mt-4">
-         <h3 class="text-base font-medium text-gray-800">{props.title}</h3>
+      <div class="">
+         <h3 class="text-sm font-bold text-slate-700">{props.title}</h3>
 
          <fieldset style={{ "grid-template-columns": `repeat(${props.col}, minmax(0, 1fr)` }} class="grid gap-2 mt-2">
             <For each={props.each}>
                {(el) => (
                   <label
                      for={`size-${getEl(el, 0)}`}
-                     class="relative flex items-center bg-slate-200 text-slate-700  justify-center shadow-8 rounded-full py-2 px-8 cursor-pointer"
+                     class="relative border flex items-center bg-slate-100 text-slate-700  justify-center shadow-8 rounded-full py-2 px-8 cursor-pointer"
                      classList={{
-                        "!text-white !bg-gradient-to-br from-emerald-500 to-emerald-400 !shadow-5":
-                           getEl(el, 1) === checked(),
+                        "!text-emerald-500 border-emerald-500 !bg-emerald-100 !shadow-5": getEl(el, 1) === checked(),
                      }}
                   >
                      <input
@@ -94,7 +93,7 @@ export default function EditorSettingsModal(props: EditorSettingsModalProps) {
       <>
          <button
             onClick={() => setIsOpen(true)}
-            class="flex items-center w-full rounded-xl text-slate-700 hover:text-black hover:bg-slate-200"
+            class="flex items-center w-full rounded-xl text-slate-300 hover:text-white hover:bg-white/10"
          >
             <span class="!w-12 !h-12 flex items-center justify-center text-xl">
                <TiCogOutline />
@@ -105,33 +104,35 @@ export default function EditorSettingsModal(props: EditorSettingsModalProps) {
          </button>
 
          <Modal setIsOpen={setIsOpen} isOpen={isOpen} title="Settings">
-            <Show when={editorSettings()} fallback="Loading">
-               <RadiosCards
-                  title="Editor width"
-                  each={editorSettingsOptions.widths}
-                  col={4}
-                  default={editorSettings()?.width}
-                  key="width"
-               />
-            </Show>
-            <Show when={editorSettings()} fallback="Loading">
-               <RadiosCards
-                  title="Editor background"
-                  each={Object.entries(editorSettingsOptions.bg)}
-                  col={3}
-                  default={editorSettings()?.bg}
-                  key="bg"
-               />
-            </Show>
-            <Show when={editorSettings()} fallback="Loading">
-               <RadiosCards
-                  title="Toolbar position"
-                  each={Object.entries(editorSettingsOptions.toolbar_position)}
-                  col={2}
-                  default={editorSettings()?.toolbar_position}
-                  key="toolbar_position"
-               />
-            </Show>
+            <div class="overflow-y-auto max-h-[70vh] scrollbar-hide space-y-6 py-4">
+               <Show when={editorSettings()} fallback="Loading">
+                  <RadiosCards
+                     title="Editor width"
+                     each={editorSettingsOptions.widths}
+                     col={4}
+                     default={editorSettings()?.width}
+                     key="width"
+                  />
+               </Show>
+               <Show when={editorSettings()} fallback="Loading">
+                  <RadiosCards
+                     title="Editor background"
+                     each={Object.entries(editorSettingsOptions.bg)}
+                     col={3}
+                     default={editorSettings()?.bg}
+                     key="bg"
+                  />
+               </Show>
+               <Show when={editorSettings()} fallback="Loading">
+                  <RadiosCards
+                     title="Toolbar position"
+                     each={Object.entries(editorSettingsOptions.toolbar_position)}
+                     col={2}
+                     default={editorSettings()?.toolbar_position}
+                     key="toolbar_position"
+                  />
+               </Show>
+            </div>
 
             <div class="flex items-center justify-end mt-6 space-x-2">
                <button type="button" class="btn btn-ghost-default btn-pill" onClick={() => setIsOpen(false)}>

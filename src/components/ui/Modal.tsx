@@ -25,7 +25,7 @@ export default function Modal(props: ModalProps): JSX.Element {
       <>
          <Portal>
             <Transition appear show={props.isOpen()}>
-               <Dialog isOpen class="fixed inset-0 z-50 overflow-y-auto" onClose={closeModal}>
+               <Dialog isOpen class="fixed inset-0 z-50" onClose={closeModal}>
                   <div class="min-h-screen px-4 flex items-center justify-center">
                      <TransitionChild
                         enter="ease-out duration-300"
@@ -62,7 +62,7 @@ export default function Modal(props: ModalProps): JSX.Element {
                            </button>
 
                            <Show when={props.title}>
-                              <DialogTitle as="h2" class="text-xl md:text-2xl font-semibold leading-6 text-gray-900">
+                              <DialogTitle as="h2" class="text-xl md:text-2xl font-bold leading-6 text-gray-900">
                                  {props.title}
                               </DialogTitle>
                            </Show>

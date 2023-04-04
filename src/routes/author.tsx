@@ -1,5 +1,6 @@
 import { Outlet, useRouteData } from "solid-start"
 import { createServerData$, redirect } from "solid-start/server"
+import StorySideBar from "~/components/ui/StorySideBar"
 import TopNav from "~/components/ui/TopNav"
 import { authenticator } from "~/server/auth"
 
@@ -19,10 +20,14 @@ export default function AuthorLayout() {
 
    return (
       <>
-         <div class="bg-slate-100">
+         <div class="bg-slate-100 w-full max-w-[90rem] mx-auto">
             <TopNav user={user} />
 
-            <Outlet />
+            <StorySideBar>
+               <div class="min-h-screen">
+                  <Outlet />
+               </div>
+            </StorySideBar>
          </div>
       </>
    )

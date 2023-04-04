@@ -4,11 +4,7 @@ import StorySideBar from "~/components/ui/StorySideBar"
 export default function StoryLayout() {
    return (
       <>
-         <StorySideBar>
-            <div class="min-h-screen">
-               <Outlet />
-            </div>
-         </StorySideBar>
+         <Outlet />
       </>
    )
 }

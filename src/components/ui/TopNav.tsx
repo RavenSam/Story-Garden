@@ -1,4 +1,4 @@
-import { BiRegularLogOut, BiSolidLogOut } from "solid-icons/bi"
+import { BiRegularLogOut } from "solid-icons/bi"
 import { Resource, Show } from "solid-js"
 import { A } from "solid-start"
 import { UserSession } from "types"
@@ -19,7 +19,7 @@ interface TopNavProps {
 
 export default function TopNav(props: TopNavProps) {
    return (
-      <nav class="w-full p-2 bg-white/70 flex items-center justify-end">
+      <nav class="w-full p-2 flex items-center justify-end">
          <Show when={!props.user()} fallback={<LogOut />}>
             <A href="/login">Log in</A>
          </Show>
