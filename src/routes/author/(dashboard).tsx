@@ -14,14 +14,14 @@ function checkFields(form: FormData) {
 }
 
 export default function Dashboard() {
-   const [enrolling, { Form }] = createServerAction$(async (form: FormData, { request }) => {
-      const fields = await checkFields(form)
-      try {
-         const story = await createStory(request, fields)
-         return { story }
-      } catch (error: any) {
-         console.log(error)
-      }
-   })
+   // const [enrolling, { Form }] = createServerAction$(async (form: FormData, { request }) => {
+   //    const fields = await checkFields(form)
+   //    try {
+   //       const story = await createStory(request, fields)
+   //       return { story }
+   //    } catch (error: any) {
+   //       console.log(error)
+   //    }
+   // })
    return <DashboardSection />
 }

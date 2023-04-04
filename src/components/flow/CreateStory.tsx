@@ -8,12 +8,25 @@ import Input, { Textarea } from "~/components/ui/Input"
 import { Load } from "../ui/Loading"
 import toast from "solid-toast"
 import { ActionProps } from "types"
+import { createServerAction$ } from "solid-start/server"
+import { createStory } from "~/server/db/story"
+import { FormError } from "solid-start"
 
 const [isOpen, setIsOpen] = createSignal(false)
 
 export const storySchema = z.object({
    title: z.string().nonempty("The story needs a title.").max(100, "Story title should be below 100 characters"),
 })
+
+function checkFields(form: FormData) {
+   const title = form.get("title")
+   const description = form.get("description")
+
+   if (typeof title === "string" && typeof description === "string") {
+      return { title, description }
+   }
+   throw new FormError(`Form not submitted correctly.`)
+}
 
 let inputRef: HTMLInputElement
 
@@ -64,17 +77,41 @@ const CreateForm = (props: ActionProps) => {
    )
 }
 
-export default function CreateStory(props: ActionProps) {
+const CreateButton = () => (
+   <button type="button" onClick={() => setIsOpen(true)} class="btn btn-solid-primary btn-pill">
+      <TiPlus />
+
+      <span class="font-medium">New Story</span>
+   </button>
+)
+
+export default function CreateStory(props: { button?: boolean }) {
+   const [enrolling, { Form }] = createServerAction$(async (form: FormData, { request }) => {
+      const fields = await checkFields(form)
+      try {
+         const story = await createStory(request, fields)
+         return { story }
+      } catch (error: any) {
+         console.log(error)
+      }
+   })
+
    return (
       <>
-         <button type="button" onClick={() => setIsOpen(true)} class="btn btn-solid-primary btn-pill">
-            <TiPlus />
-
-            <span class="font-medium">New Story</span>
-         </button>
+         <Show when={!props.button} fallback={CreateButton}>
+            <button
+               onClick={() => setIsOpen(true)}
+               aria-label="create a strory"
+               class="group bg-slate-400/30 border rounded-xl flex items-center justify-center"
+            >
+               <span class="text-3xl btn-gradient text-slate-200 rounded-full p-3 opacity-80 group-hover:opacity-100">
+                  <TiPlus />
+               </span>
+            </button>
+         </Show>
 
          <Modal setIsOpen={setIsOpen} isOpen={isOpen} title="Create a new story">
-            <CreateForm Form={props.Form} enrolling={props.enrolling} />
+            <CreateForm Form={Form} enrolling={enrolling} />
          </Modal>
       </>
    )

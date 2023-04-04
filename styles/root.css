@@ -66,7 +66,7 @@
    }
 
    .input {
-      @apply w-full px-3  py-3 text-slate-800 bg-white/50 focus:bg-white/50 hover:bg-slate-300 placeholder-slate-500 outline-none text-base font-light rounded-xl;
+      @apply w-full px-3  py-3 text-slate-800 bg-white/50 focus:bg-white/50 hover:bg-slate-300 placeholder-slate-500 outline-none text-base font-normal rounded-xl;
    }
 
    .btn-pill {
