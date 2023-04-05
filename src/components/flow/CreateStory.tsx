@@ -104,7 +104,7 @@ export default function CreateStory(props: { button?: boolean }) {
                type="button"
                onClick={() => setIsOpen(true)}
                aria-label="create a strory"
-               class="group bg-slate-400/30 border rounded-xl flex items-center justify-center"
+               class="group bg-slate-400/30 border rounded-xl flex items-center justify-center p-2"
             >
                <span class="text-3xl btn-gradient text-slate-200 rounded-full p-3 opacity-80 group-hover:opacity-100">
                   <TiPlus />

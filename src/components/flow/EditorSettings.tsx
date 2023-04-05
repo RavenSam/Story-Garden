@@ -104,7 +104,7 @@ export default function EditorSettingsModal(props: EditorSettingsModalProps) {
          </button>
 
          <Modal setIsOpen={setIsOpen} isOpen={isOpen} title="Settings">
-            <div class="overflow-y-auto max-h-[70vh] scrollbar-hide space-y-6 py-4">
+            <div class="space-y-6 py-4">
                <Show when={editorSettings()} fallback="Loading">
                   <RadiosCards
                      title="Editor width"

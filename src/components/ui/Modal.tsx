@@ -67,7 +67,7 @@ export default function Modal(props: ModalProps): JSX.Element {
                               </DialogTitle>
                            </Show>
 
-                           <div class="mt-4">{props.children}</div>
+                           <div class="mt-4 modal-body">{props.children}</div>
                         </DialogPanel>
                      </TransitionChild>
                   </div>
