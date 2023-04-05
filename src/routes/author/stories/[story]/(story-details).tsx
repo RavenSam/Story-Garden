@@ -1,11 +1,23 @@
-import { useParams } from "solid-start"
+import { RouteDataArgs, useParams } from "solid-start"
+import { createServerData$ } from "solid-start/server"
+import SingleStoryLayout from "~/components/sections/SingleStoryLayout"
+
+export const routeData = ({ params }: RouteDataArgs) => {
+   return createServerData$(async (_, { request }) => {
+      const storySlug = params
+
+      console.log({ storySlug, name: "name" })
+
+      return storySlug
+   })
+}
 
 export default function Story() {
    const params = useParams<{ story: string }>()
 
    return (
-      <div class="w-full h-screen flex items-center justify-center">
-         <h1 class="text-2xl  font-bold">Your Story {params.story}</h1>
-      </div>
+      <>
+         <SingleStoryLayout />
+      </>
    )
 }

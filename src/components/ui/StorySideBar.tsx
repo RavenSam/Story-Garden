@@ -144,7 +144,7 @@ export default function StorySideBar(props: SideBarProps) {
 
             <button
                onClick={() => setOpen((prev) => !prev)}
-               class="absolute top-0 right-0 translate-x-full text-xl p-2 rounded-xl text-slate-700 hover:text-black"
+               class="absolute top-0 right-0 translate-x-full text-xl p-5  btn rounded-xl text-slate-700 hover:text-black"
             >
                <HiSolidMenuAlt2 class="text-2xl" />
             </button>

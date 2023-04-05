@@ -8,66 +8,13 @@
 import { For } from "solid-js"
 import { RecentStories, StoryCard } from "~/components/flow/Books"
 
-const stories = [
-   {
-      id: "1",
-      title: "The Adventures of Sherlock Holmes",
-      slug: "the-adventures-of-sherlock-holmes",
-      cover: "",
-      published: true,
-      accountId: "1234",
-      createdAt: "2022-04-01T14:30:00.000Z",
-      updatedAt: "2022-04-05T09:45:00.000Z",
-   },
-   {
-      id: "2",
-      title: "Pride and Prejudice",
-      slug: "pride-and-prejudice",
-      cover: "",
-      published: true,
-      accountId: "5678",
-      createdAt: "2022-02-15T08:00:00.000Z",
-      updatedAt: "2022-03-01T16:20:00.000Z",
-   },
-   {
-      id: "3",
-      title: "The Catcher in the Rye",
-      slug: "the-catcher-in-the-rye",
-      cover: null,
-      published: false,
-      accountId: "9012",
-      createdAt: "2022-03-10T11:15:00.000Z",
-      updatedAt: "2022-03-15T18:00:00.000Z",
-   },
-   {
-      id: "4",
-      title: "To Kill a Mockingbird",
-      slug: "to-kill-a-mockingbird",
-      cover: "",
-      published: true,
-      accountId: "3456",
-      createdAt: "2022-01-20T19:30:00.000Z",
-      updatedAt: "2022-02-10T13:40:00.000Z",
-   },
-   {
-      id: "5",
-      title: "1984",
-      slug: null,
-      cover: null,
-      published: true,
-      accountId: "7890",
-      createdAt: "2022-02-05T10:00:00.000Z",
-      updatedAt: "2022-03-01T14:50:00.000Z",
-   },
-]
-
 export default function DashboardSection() {
    return (
       <div class="p-4">
          <h1 class="text-3xl text-slate-500 font-extrabold ">Dashboard</h1>
          <hr class="border-emerald-500 border-2 rounded-full w-1/5 my-4" />
 
-         <RecentStories stories={stories} />
+         <RecentStories />
       </div>
    )
 }

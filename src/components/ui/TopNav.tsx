@@ -19,7 +19,7 @@ interface TopNavProps {
 
 export default function TopNav(props: TopNavProps) {
    return (
-      <nav class="w-full p-2 flex items-center justify-end">
+      <nav class="fixed top-0 right-0 p-2 flex items-center justify-end">
          <Show when={!props.user()} fallback={<LogOutBtn />}>
             <A href="/login">Log in</A>
          </Show>
