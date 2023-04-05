@@ -1,3 +1,4 @@
+import { Show } from "solid-js"
 import { Outlet, useRouteData } from "solid-start"
 import { createServerData$, redirect } from "solid-start/server"
 import StorySideBar from "~/components/ui/StorySideBar"
@@ -7,10 +8,9 @@ import { authenticator } from "~/server/auth"
 export const routeData = () => {
    return createServerData$(async (_, { request }) => {
       const user = await authenticator.isAuthenticated(request)
-      // console.log(user)
-      if (!user) {
-         throw redirect("/login")
-      }
+
+      if (!user) throw redirect("/login")
+
       return user
    })
 }

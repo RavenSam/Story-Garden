@@ -30,7 +30,7 @@ model Story {
   characters  Character[]
   story_notes Note[]
   published   Boolean     @default(false)
-  author      User        @relation(fields: [authorId], references: [id])
+  author      User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId    String      @db.ObjectId
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
@@ -42,7 +42,7 @@ model Chapter {
   slug          String?
   content       String?
   chapter_notes Note[]
-  story         Story    @relation(fields: [storyId], references: [id])
+  story         Story    @relation(fields: [storyId], references: [id], onDelete: Cascade)
   storyId       String   @db.ObjectId
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt

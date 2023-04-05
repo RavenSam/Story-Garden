@@ -15,7 +15,7 @@ export const NoStory = () => {
 
 export const StoryCard = ({ story }: { story: Story }) => {
    return (
-      <A href={story.slug || story.id} class="relative">
+      <A href={`stories/${story.slug}`} class="relative">
          <div class="border rounded-xl max-w-xs overflow-hidden">
             <img
                class="block h-full w-full aspect-[1/1.6] object-contain"

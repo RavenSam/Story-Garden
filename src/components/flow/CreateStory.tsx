@@ -10,7 +10,7 @@ import toast from "solid-toast"
 import { ActionProps } from "types"
 import { createServerAction$ } from "solid-start/server"
 import { createStory } from "~/server/db/story"
-import { FormError } from "solid-start"
+import { FormError, Navigate, useNavigate } from "solid-start"
 
 const [isOpen, setIsOpen] = createSignal(false)
 
@@ -31,6 +31,8 @@ function checkFields(form: FormData) {
 let inputRef: HTMLInputElement
 
 const CreateForm = (props: ActionProps) => {
+   const navigate = useNavigate()
+
    const formHandler = useFormHandler(zodSchema(storySchema))
 
    onMount(() => inputRef.focus())
@@ -39,6 +41,7 @@ const CreateForm = (props: ActionProps) => {
       if (props.enrolling?.result) {
          toast.success("New story created", { className: "success" })
          props.enrolling?.clear()
+
          setIsOpen(false)
       }
    })
@@ -94,6 +97,7 @@ export default function CreateStory(props: { button?: boolean }) {
          return { story }
       } catch (error: any) {
          console.log(error)
+         throw new Error(error.message)
       }
    })
 

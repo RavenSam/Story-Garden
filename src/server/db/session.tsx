@@ -25,6 +25,16 @@ export async function getUser(request: Request) {
    return user
 }
 
+export async function userExists(request: Request) {
+   const sessUser = await getUser(request)
+
+   const user = await db.user.findUnique({ where: { id: sessUser?.id } })
+
+   if (!user) throw redirect(`/sign-up`)
+
+   return user
+}
+
 export async function requireUserId(request: Request, redirectTo: string = new URL(request.url).pathname) {
    const session = await getUserSession(request)
    const userId = session.get("userId")

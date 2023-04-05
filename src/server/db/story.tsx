@@ -1,18 +1,49 @@
 import { db } from "."
-import { getUser } from "./session"
+import { userExists } from "./session"
 
+/***************************************************************
+ *
+ * @param request
+ * @param fields
+ * @description creating a stoty if the user exists - the slug is within prisma middleware
+ * @returns the created story
+ */
 export const createStory = async (request: Request, fields: { title: string; description: string }) => {
-   const user = await getUser(request)
+   const user = await userExists(request)
 
-   if (!user) throw new Error("user not found")
+   const storyWithTitle = await db.story.findFirst({ where: { title: fields.title } })
+
+   if (storyWithTitle) throw new Error("Try another title.")
 
    return await db.story.create({ data: { title: fields.title, authorId: user?.id } })
 }
 
+/***************************************************************
+ *
+ * @param request
+ * @param count
+ * @description get a list of stories
+ * @returns
+ */
 export const getStories = async (request: Request, count: number) => {
-   const user = await getUser(request)
-
-   if (!user) throw new Error("user not found")
+   const user = await userExists(request)
 
    return await db.story.findMany({ where: { authorId: user.id }, take: count, orderBy: { updatedAt: "desc" } })
+}
+
+/***************************************************************
+ *
+ * @param request
+ * @param id the story id
+ * @description delete a single story if the story exists AND the authorId = user.id
+ * @returns
+ */
+export const deleteStory = async (request: Request, id: string) => {
+   const user = await userExists(request)
+
+   const storyExists = await db.story.findFirst({ where: { id: user.id, AND: { authorId: user.id } } })
+
+   if (!storyExists) throw new Error("Story doesn't exist or you you don't have permission.")
+
+   return await db.story.delete({ where: { id } })
 }

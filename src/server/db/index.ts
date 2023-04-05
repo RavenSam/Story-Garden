@@ -28,10 +28,8 @@ db.$use(async (params, next) => {
    const hasSlug = params.model ? modelsWithSlug.includes(params.model) : null
 
    if ((updateAction || createAction) && hasSlug) {
-      let {
-         args: { data },
-      } = params
-      // Check if slug exists by `findUnique` (did not test)
+      let { data } = params.args
+
       data.slug = slugify(`${data.title}`, { lower: true, strict: true, remove: /[*+~.()'"!:@]/g })
    }
    const result = await next(params)
