@@ -10,15 +10,17 @@ export const DeleteStory = () => {
    const [isOpen, setIsOpen] = createSignal(false)
 
    return (
-      <div class="flex items-center justify-between">
-         <div class="">
-            <h3 class="font-bold text-slate-700">Delete this Story</h3>
-            <p class="text-sm py-2">Once you delete a story, there is no going back. Please be certain. </p>
-         </div>
+      <>
+         <div class="flex items-center justify-between flex-shrink">
+            <div class="">
+               <h3 class="font-bold text-slate-700">Delete this Story</h3>
+               <p class="text-sm py-2 pr-2">Once you delete a story, there is no going back. Please be certain. </p>
+            </div>
 
-         <button type="button" onClick={() => setIsOpen(true)} class="btn btn-pill btn-outline-danger text-sm">
-            Delete this story
-         </button>
+            <button type="button" onClick={() => setIsOpen(true)} class="btn btn-pill btn-outline-danger text-sm">
+               Delete this story
+            </button>
+         </div>
 
          <Modal setIsOpen={setIsOpen} isOpen={isOpen} title="Delete a story">
             <div class="">
@@ -39,6 +41,6 @@ export const DeleteStory = () => {
                </div>
             </div>
          </Modal>
-      </div>
+      </>
    )
 }

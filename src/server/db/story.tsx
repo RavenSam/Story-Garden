@@ -31,6 +31,22 @@ export const getStories = async (request: Request, count: number) => {
    return await db.story.findMany({ where: { authorId: user.id }, take: count, orderBy: { updatedAt: "desc" } })
 }
 
+/**
+ *
+ * @param request
+ * @param slug
+ * @returns
+ */
+export const getStory = async (request: Request, slug: string) => {
+   const user = await userExists(request)
+
+   const story = await db.story.findFirst({ where: { authorId: user.id, AND: { slug } } })
+
+   if (!story) throw new Error("Story not found")
+
+   return story
+}
+
 /***************************************************************
  *
  * @param request
