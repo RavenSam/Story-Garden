@@ -40,6 +40,7 @@ const CreateForm = (props: ActionProps) => {
    createEffect(() => {
       if (props.enrolling?.result) {
          toast.success("New story created", { className: "success" })
+         setIsOpen(false)
          navigate("stories/" + props.enrolling?.result?.story.slug)
       }
    })
