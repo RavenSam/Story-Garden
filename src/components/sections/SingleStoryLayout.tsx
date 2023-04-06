@@ -3,10 +3,10 @@ import { For, JSXElement, Show } from "solid-js"
 import { A, useLocation } from "solid-start"
 
 const story_tabs = [
-   { title: "overview", icon: HiOutlineBookOpen, href: "/author/stories/story-5" },
-   { title: "chapters", icon: HiOutlineCollection, href: "/author/stories/story-5/chapters" },
-   { title: "notes", icon: HiOutlinePencilAlt, href: "/author/stories/story-5/notes" },
-   { title: "settings", icon: HiOutlineCog, href: "/author/stories/story-5/settings" },
+   { title: "overview", icon: HiOutlineBookOpen, href: "" },
+   { title: "chapters", icon: HiOutlineCollection, href: "chapters" },
+   { title: "notes", icon: HiOutlinePencilAlt, href: "notes" },
+   { title: "settings", icon: HiOutlineCog, href: "settings" },
 ]
 
 interface Props {
@@ -26,7 +26,8 @@ export default function SingleStoryLayout(props: Props) {
                         <A
                            href={tab.href}
                            class={`btn flex-col sm:flex-row px-4 md:px-6 py-3 capitalize text-smbefore:bg-emerald-500  rounded-xl hover:bg-white/10 sm:hover:bg-black/10 ${
-                              location.pathname === tab.href
+                              location.pathname.split("/").at(-1) === tab.href ||
+                              (location.pathname.split("/").length === 4 && tab.href === "")
                                  ? "text-emerald-500 "
                                  : " text-slate-500 hover:text-white sm:hover:text-slate-800 "
                            }`}

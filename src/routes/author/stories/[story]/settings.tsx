@@ -1,13 +1,25 @@
-import { RouteDataArgs } from "solid-start"
+import { RouteDataArgs, useRouteData } from "solid-start"
+import { createServerData$ } from "solid-start/server"
 import { DeleteStory } from "~/components/sections/story-tabs/StorySettings"
+import { getStory } from "~/server/db/story"
 
-// export const routeData = ({ params }: RouteDataArgs) => {
-//    console.log(params.story)
-
-//    return 5
-// }
+export const routeData = ({ params }: RouteDataArgs) => {
+   return createServerData$(
+      async ([, slug], { request }) => {
+         try {
+            return await getStory(request, slug)
+         } catch (error) {
+            console.log(error)
+            throw error
+         }
+      },
+      { key: () => ["slug", params.story] }
+   )
+}
 
 export default function Settings() {
+   const story = useRouteData<typeof routeData>()
+
    return (
       <>
          <div class="p-2">
@@ -17,7 +29,7 @@ export default function Settings() {
                   <div class="">
                      <h2 class="text-xl font-bold py-4">Danger Zone</h2>
                      <div class="border border-pink-600 bg-pink-100 rounded-xl p-4">
-                        <DeleteStory />
+                        <DeleteStory story={story} />
                      </div>
                   </div>
                </div>

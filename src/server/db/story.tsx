@@ -1,3 +1,4 @@
+import { redirect } from "solid-start"
 import { db } from "."
 import { userExists } from "./session"
 
@@ -42,7 +43,7 @@ export const getStory = async (request: Request, slug: string) => {
 
    const story = await db.story.findFirst({ where: { authorId: user.id, AND: { slug } } })
 
-   if (!story) throw new Error("Story not found")
+   if (!story) throw redirect("/author")
 
    return story
 }
@@ -57,7 +58,7 @@ export const getStory = async (request: Request, slug: string) => {
 export const deleteStory = async (request: Request, id: string) => {
    const user = await userExists(request)
 
-   const storyExists = await db.story.findFirst({ where: { id: user.id, AND: { authorId: user.id } } })
+   const storyExists = await db.story.findFirst({ where: { id, AND: { authorId: user.id } } })
 
    if (!storyExists) throw new Error("Story doesn't exist or you you don't have permission.")
 
