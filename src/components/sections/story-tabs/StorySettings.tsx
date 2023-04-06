@@ -6,7 +6,7 @@ import Input from "~/components/ui/Input"
 import Modal from "~/components/ui/Modal"
 import { deleteStory } from "~/server/db/story"
 
-const DeleteStory = () => {
+export const DeleteStory = () => {
    const [isOpen, setIsOpen] = createSignal(false)
 
    return (
@@ -16,7 +16,7 @@ const DeleteStory = () => {
             <p class="text-sm py-2">Once you delete a story, there is no going back. Please be certain. </p>
          </div>
 
-         <button type="button" onClick={() => setIsOpen(true)} class="btn btn-pill btn-solid-danger text-sm">
+         <button type="button" onClick={() => setIsOpen(true)} class="btn btn-pill btn-outline-danger text-sm">
             Delete this story
          </button>
 
@@ -34,26 +34,11 @@ const DeleteStory = () => {
                   </button>
 
                   <button type="submit" class="btn btn-solid-danger btn-pill">
-                     Yes, I'm sure. Delete
+                     Yes, I'm sure. Delete.
                   </button>
                </div>
             </div>
          </Modal>
-      </div>
-   )
-}
-
-export default function StorySettings() {
-   return (
-      <div class="p-4">
-         <div class="max-w-xl">
-            <div class="">
-               <h2 class="text-xl font-bold text-slate-700 py-4">Danger Zone</h2>
-               <div class="border border-pink-600 bg-pink-100 rounded-xl p-4">
-                  <DeleteStory />
-               </div>
-            </div>
-         </div>
       </div>
    )
 }

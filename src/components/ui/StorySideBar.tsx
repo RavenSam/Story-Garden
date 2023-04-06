@@ -1,8 +1,8 @@
 import { For, createSignal, Show, JSXElement, onMount, createEffect, onCleanup } from "solid-js"
 import { A, useLocation, useParams } from "solid-start"
 import { IconTypes } from "solid-icons"
-import { TiDocument, TiUserOutline, TiThLargeOutline, TiChevronRight, TiLocation, TiNotes } from "solid-icons/ti"
-import { HiSolidMenuAlt2 } from "solid-icons/hi"
+import { TiDocument, TiUserOutline, TiThLargeOutline, TiChevronRight, TiLocation } from "solid-icons/ti"
+import { HiOutlinePencilAlt, HiSolidMenuAlt2 } from "solid-icons/hi"
 import EditorSettingsModal from "~/components/flow/EditorSettings"
 
 type ListType = { name: string; icon: IconTypes; href: string; childrenList: { name: string; href: string }[] }
@@ -19,11 +19,11 @@ const SIDENAV_MAX_WIDTH = 240
 const SIDENAV_MIN_WIDTH = 64
 
 const navList: ListType[] = [
-   { name: "Dashboard", icon: TiThLargeOutline, href: "/author/", childrenList: [] },
+   { name: "Dashboard", icon: TiThLargeOutline, href: "/author", childrenList: [] },
    { name: "Stories", icon: TiDocument, href: "/author/stories", childrenList: [] },
    { name: "Characters", icon: TiUserOutline, href: "/author/characters", childrenList: [] },
    { name: "Locations", icon: TiLocation, href: "/author/locations", childrenList: [] },
-   { name: "My Notes", icon: TiNotes, href: "/author/notes", childrenList: [] },
+   { name: "My Notes", icon: HiOutlinePencilAlt, href: "/author/notes", childrenList: [] },
 ]
 
 const SideLink = ({ item }: { item: ListType }) => {
@@ -40,8 +40,9 @@ const SideLink = ({ item }: { item: ListType }) => {
          <div
             // onMouseEnter={() => hasChildren && !open() && setIsShown(true)}
             // onMouseLeave={() => hasChildren && !open() && setIsShown(false)}
-            class="flex items-center rounded-xl text-slate-300 hover:text-white hover:bg-white/10"
-            classList={{ "btn-gradient shadow-md": item.href === location.pathname }}
+            class={`flex items-center rounded-xl text-slate-300 hover:text-white hover:bg-white/10 ${
+               item.href === location.pathname ? "btn-gradient shadow-md" : ""
+            }`}
          >
             <A href={item.href} class="flex items-center w-full">
                <span class="!w-12 !h-12 flex items-center justify-center text-xl">
@@ -150,9 +151,9 @@ export default function StorySideBar(props: SideBarProps) {
             </button>
          </div>
 
-         <div style={{ "margin-left": mobileScreen() ? 0 : sideNavWidth() + "px" }} class="transition-[margin]">
+         <main style={{ "margin-left": mobileScreen() ? 0 : sideNavWidth() + "px" }} class="transition-[margin]">
             {props.children}
-         </div>
+         </main>
       </>
    )
 }

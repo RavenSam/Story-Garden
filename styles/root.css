@@ -208,7 +208,8 @@
 }
 
 /* For Webkit-based browsers (Chrome, Safari and Opera) */
-.scrollbar-hide::-webkit-scrollbar, .modal-body > div:first-child::-webkit-scrollbar {
+.scrollbar-hide::-webkit-scrollbar,
+.modal-body > div:first-child::-webkit-scrollbar {
    display: none;
 }
 
@@ -224,3 +225,16 @@
    -ms-overflow-style: none; /* IE and Edge */
    scrollbar-width: none; /* Firefox */
 }
+
+/* .active-tab {
+   position: relative;
+}
+
+.active-tab::before {
+   content: "";
+   position: absolute;
+   width: 100%;
+   height: 4px;
+   bottom: -8px;
+   border-radius: 50px;
+} */
