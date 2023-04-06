@@ -11,9 +11,9 @@ import { userExists } from "./session"
 export const createStory = async (request: Request, fields: { title: string; description: string }) => {
    const user = await userExists(request)
 
-   const storyWithTitle = await db.story.findFirst({ where: { title: fields.title } })
+   const storyTitleExists = await db.story.findFirst({ where: { title: fields.title, AND: { authorId: user.id } } })
 
-   if (storyWithTitle) throw new Error("Try another title.")
+   if (storyTitleExists) throw new Error("Try another title.")
 
    return await db.story.create({ data: { title: fields.title, authorId: user?.id } })
 }

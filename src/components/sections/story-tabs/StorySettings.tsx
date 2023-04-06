@@ -18,7 +18,7 @@ export const DeleteStory = () => {
             </div>
 
             <button type="button" onClick={() => setIsOpen(true)} class="btn btn-pill btn-outline-danger text-sm">
-               Delete this story
+               Delete story
             </button>
          </div>
 
