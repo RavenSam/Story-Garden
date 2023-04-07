@@ -40,11 +40,13 @@ export default function Input(props: TextInputProps) {
 
                   <Show when={local.type === "password"}>
                      <button
+                        title={showPW() ? "Hide Password" : "Show Password"}
                         onclick={() => setShowPW((p) => !p)}
                         type="button"
                         class="absolute btn right-0 top-0 bottom-0 flex items-center justify-center p-2 text-xl text-slate-700"
                      >
                         {showPW() ? <HiSolidEye /> : <HiSolidEyeOff />}
+                        <span class="sr-only">{showPW() ? "hide password" : "show password"}</span>
                      </button>
                   </Show>
                </div>
