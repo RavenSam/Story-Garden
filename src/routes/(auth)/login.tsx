@@ -1,5 +1,5 @@
 import { createEffect, onMount } from "solid-js"
-import { createRouteAction, Navigate, useNavigate } from "solid-start"
+import { createRouteAction, Meta, Navigate, Title, useNavigate } from "solid-start"
 import { FormError, useRouteData } from "solid-start/data"
 import { createServerData$, redirect } from "solid-start/server"
 import LoginSection from "~/components/sections/LoginSection"
@@ -48,5 +48,14 @@ export default function Login() {
       }
    })
 
-   return <LoginSection Form={Form} enrolling={enrolling} />
+   return (
+      <>
+         <Title>Login to Story Garden | Organize and Structure Your Stories</Title>
+         <Meta
+            name="description"
+            content="Log in to Story Garden to continue writing, organizing, and structuring your stories."
+         />
+         <LoginSection Form={Form} enrolling={enrolling} />
+      </>
+   )
 }

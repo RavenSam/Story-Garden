@@ -1,4 +1,4 @@
-import { RouteDataArgs, useRouteData } from "solid-start"
+import { Meta, RouteDataArgs, Title, useRouteData } from "solid-start"
 import { createServerData$ } from "solid-start/server"
 import { getStory } from "~/server/db/story"
 
@@ -21,6 +21,9 @@ export default function Story() {
 
    return (
       <>
+         <Title>{story()?.title} | Story Garden</Title>
+         <Meta name="description" content={`Read ${story()?.title} | ${story()?.synopsis} `} />
+
          <h1>overview {story()?.title}</h1>
       </>
    )

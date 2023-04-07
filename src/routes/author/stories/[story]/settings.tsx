@@ -1,4 +1,4 @@
-import { RouteDataArgs, useRouteData } from "solid-start"
+import { Meta, RouteDataArgs, Title, useRouteData } from "solid-start"
 import { createServerData$ } from "solid-start/server"
 import { DeleteStory } from "~/components/sections/story-tabs/StorySettings"
 import { getStory } from "~/server/db/story"
@@ -22,6 +22,14 @@ export default function Settings() {
 
    return (
       <>
+         <Title>Story Settings - {story()?.title} - Author Dashboard | Story Garden</Title>
+         <Meta
+            name="description"
+            content={`Customize the settings for your story - ${
+               story()?.title
+            } on Story Garden. Change story details, cover image, and manage permissions. Start writing and organizing your stories today!`}
+         />
+
          <div class="p-2">
             <div class="grid grid-cols-1 md:grid-cols-12">
                <div class="col-span-4"></div>

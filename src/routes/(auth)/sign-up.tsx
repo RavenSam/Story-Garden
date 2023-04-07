@@ -1,4 +1,4 @@
-import { createRouteAction, FormError, redirect } from "solid-start"
+import { createRouteAction, FormError, Meta, redirect, Title } from "solid-start"
 import { createServerData$ } from "solid-start/server"
 import SignUpSection from "~/components/sections/SignUpSection"
 import { authenticator } from "~/server/auth"
@@ -51,5 +51,14 @@ export default function SignUp() {
       }
    })
 
-   return <SignUpSection Form={Form} enrolling={enrolling} />
+   return (
+      <>
+         <Title>Join Story Garden - Create an Account Today!</Title>
+         <Meta
+            name="description"
+            content="Sign up for Story Garden and start writing your stories today. Organize and structure your writing in a clean and intuitive interface."
+         />
+         <SignUpSection Form={Form} enrolling={enrolling} />
+      </>
+   )
 }

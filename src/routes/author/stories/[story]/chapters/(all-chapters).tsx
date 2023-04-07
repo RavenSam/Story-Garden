@@ -1,5 +1,5 @@
 import { For } from "solid-js"
-import { A } from "solid-start"
+import { A, Meta, Title } from "solid-start"
 
 const chapters = [
    { name: "Chapter 1", href: "chapter-1" },
@@ -42,21 +42,29 @@ const chapters = [
 
 export default function Manuscript() {
    return (
-      <div class="w-full h-screen flex items-center flex-col mt-32">
-         <h1 class="text-2xl  font-bold">All Your Chapters</h1>
+      <>
+         <Title>Chapters - [Story Title] | Story Garden</Title>
+         <Meta
+            name="description"
+            content="Explore the chapters of [Story Title] on Story Garden. Organize, structure, and edit your story with ease. Start writing your own masterpiece today."
+         />
 
-         <div class="grid grid-cols-3 gap-2 gap-y-10 my-8 ">
-            <For each={chapters}>
-               {(item) => (
-                  <A
-                     href={item.href}
-                     class="rounded-xl font-medium block py-3 px-10 bg-emerald-500 hover:bg-emerald-600"
-                  >
-                     {item.name}
-                  </A>
-               )}
-            </For>
+         <div class="w-full h-screen flex items-center flex-col mt-32">
+            <h1 class="text-2xl  font-bold">All Your Chapters</h1>
+
+            <div class="grid grid-cols-3 gap-2 gap-y-10 my-8 ">
+               <For each={chapters}>
+                  {(item) => (
+                     <A
+                        href={item.href}
+                        class="rounded-xl font-medium block py-3 px-10 bg-emerald-500 hover:bg-emerald-600"
+                     >
+                        {item.name}
+                     </A>
+                  )}
+               </For>
+            </div>
          </div>
-      </div>
+      </>
    )
 }

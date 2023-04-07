@@ -25,7 +25,8 @@ model Story {
   title       String
   slug        String?
   cover       String?
-  manuscript  Chapter[]
+  synopsis    String?
+  chapters    Chapter[]
   places      Place[]
   characters  Character[]
   story_notes Note[]
@@ -41,6 +42,7 @@ model Chapter {
   title         String
   slug          String?
   content       String?
+  excerpt       String?
   chapter_notes Note[]
   story         Story    @relation(fields: [storyId], references: [id], onDelete: Cascade)
   storyId       String   @db.ObjectId
