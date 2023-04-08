@@ -21,6 +21,7 @@
     "@tiptap/pm": "2.0.0-beta.220",
     "@tiptap/starter-kit": "2.0.0-beta.220",
     "crypto-js": "^4.1.1",
+    "date-fns": "^2.29.3",
     "nprogress": "^0.2.0",
     "slugify": "^1.6.6",
     "solid-form-handler": "1.2.0-alpha.4",

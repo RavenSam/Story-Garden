@@ -43,6 +43,7 @@ model Chapter {
   slug          String?
   content       String?
   excerpt       String?
+  word_count    Int      @default(0)
   chapter_notes Note[]
   story         Story    @relation(fields: [storyId], references: [id], onDelete: Cascade)
   storyId       String   @db.ObjectId

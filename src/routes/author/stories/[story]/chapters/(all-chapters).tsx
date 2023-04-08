@@ -1,3 +1,5 @@
+import { format, formatDistance, formatDistanceToNow, subDays } from "date-fns"
+import { HiSolidPlus } from "solid-icons/hi"
 import { createEffect, createSignal, For, onMount, Show } from "solid-js"
 import { A, Meta, RouteDataArgs, Title, useRouteData } from "solid-start"
 import { createServerAction$, createServerData$, redirect } from "solid-start/server"
@@ -31,7 +33,10 @@ const NewChapter = () => {
       <Form>
          <input type="hidden" name="newChapter" value={storyId()} />
          <button disabled={enrolling.pending} type="submit" class="btn btn-solid-primary btn-pill">
-            New Chapter
+            <span>
+               <HiSolidPlus />
+            </span>
+            <span class="hidden md:inline">New Chapter</span>
          </button>
       </Form>
    )
@@ -61,13 +66,6 @@ export const routeData = ({ params }: RouteDataArgs) => {
    )
 }
 
-const chapters = [
-   { name: "Chapter 1", href: "chapter-1" },
-   { name: "Chapter 2", href: "chapter-2" },
-   { name: "Chapter 3", href: "chapter-3" },
-   { name: "Chapter 4", href: "chapter-4" },
-]
-
 export default function Manuscript() {
    const story = useRouteData<typeof routeData>()
 
@@ -75,24 +73,31 @@ export default function Manuscript() {
 
    return (
       <>
-         <Title>Chapters - [Story Title] | Story Garden</Title>
+         <Title>Chapters - {story()?.title} | Story Garden</Title>
          <Meta
             name="description"
-            content="Explore the chapters of [Story Title] on Story Garden. Organize, structure, and edit your story with ease. Start writing your own masterpiece today."
+            content={`Explore the chapters of ${
+               story()?.title
+            } on Story Garden. Organize, structure, and edit your story with ease. Start writing your own masterpiece today.`}
          />
 
          <div class="p-4">
             <Show when={story()?.chapters?.length} fallback={<NoChapters />}>
-               <h1 class="text-3xl  font-bold">All Your Chapters</h1>
+               <h1 class="text-3xl  font-bold">Chapters</h1>
 
-               <div class="grid grid-cols-3 gap-2 gap-y-10 my-8 ">
+               <div class="flex items-center justify-end py-4">
+                  <NewChapter />
+               </div>
+
+               <div class="space-y-4 py-4">
                   <For each={story()?.chapters}>
                      {(item) => (
-                        <A
-                           href={item.id}
-                           class="rounded-xl font-medium block py-3 px-10 bg-emerald-500 hover:bg-emerald-600"
-                        >
-                           {item.title}
+                        <A href={item.id} class="rounded-xl flex items-center justify-between shadow-8 p-4">
+                           <span class="font-bold">{item.title}</span>
+                           <span class="">{item.word_count}</span>
+                           <span title={format(item.updatedAt, "MMMM dd YYY")} class="text-xs">
+                              {formatDistanceToNow(item.updatedAt)} ago
+                           </span>
                         </A>
                      )}
                   </For>
