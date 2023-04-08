@@ -64,3 +64,35 @@ export const deleteStory = async (request: Request, id: string) => {
 
    return await db.story.delete({ where: { id } })
 }
+
+/**
+ *
+ * @param request
+ * @param slug
+ * @returns
+ */
+export const getStoryChapters = async (request: Request, slug: string) => {
+   const user = await userExists(request)
+
+   const story = await db.story.findFirst({ where: { authorId: user.id, AND: { slug } }, include: { chapters: true } })
+
+   if (!story) throw redirect("/author")
+
+   return story
+}
+
+/**
+ *
+ * @param request
+ * @param storyId
+ * @returns
+ */
+export const newChapters = async (request: Request, storyId: string) => {
+   const user = await userExists(request)
+
+   const chapter = await db.chapter.create({ data: { title: "untitled", storyId } })
+
+   if (!chapter) throw new Error("Something went wrong creating the chapter")
+
+   return chapter
+}

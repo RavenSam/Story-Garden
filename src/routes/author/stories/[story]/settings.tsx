@@ -20,9 +20,11 @@ export const routeData = ({ params }: RouteDataArgs) => {
 export default function Settings() {
    const story = useRouteData<typeof routeData>()
 
+   const title = story()?.title
+
    return (
       <>
-         <Title>Story Settings - {story()?.title} - Author Dashboard | Story Garden</Title>
+         <Title>Story Settings - {title} - Author Dashboard | Story Garden</Title>
          <Meta
             name="description"
             content={`Customize the settings for your story - ${
