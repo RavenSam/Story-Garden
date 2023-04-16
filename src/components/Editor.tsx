@@ -1,4 +1,5 @@
-import { createSignal, onMount } from "solid-js"
+import { Chapter } from "@prisma/client"
+import { createSignal, onMount, Resource } from "solid-js"
 import TiptapEditor from "./tiptap/TiptapEditor"
 
 export type EditorSettingsTypes = {
@@ -26,7 +27,11 @@ export const editorSettingsDefault: EditorSettingsTypes = {
 
 export const [editorSettings, setEditorSettings] = createSignal<EditorSettingsTypes>()
 
-export default function Editor() {
+interface EdiorProps {
+   chapter: Resource<Chapter | undefined>
+}
+
+export default function Editor(props: EdiorProps) {
    onMount(() => {
       if (typeof window !== "undefined") {
          const isStored = window.localStorage.getItem("editorSettings")
@@ -45,7 +50,7 @@ export default function Editor() {
          style={{ "max-width": editorSettings()?.width + "px" }}
          class={`mx-auto w-full rounded-xl ${editorSettings()?.bg}`}
       >
-         <TiptapEditor editorSettings={editorSettings() || editorSettingsDefault} />
+         <TiptapEditor chapter={props.chapter} editorSettings={editorSettings() || editorSettingsDefault} />
       </div>
    )
 }

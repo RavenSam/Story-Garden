@@ -102,7 +102,7 @@ export default function CreateStory(props: { button?: boolean }) {
 
    return (
       <>
-         <Show when={!props.button} fallback={CreateButton}>
+         <Show when={!props.button} fallback={<CreateButton />}>
             <button
                type="button"
                onClick={() => setIsOpen(true)}

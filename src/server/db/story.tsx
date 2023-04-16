@@ -96,3 +96,19 @@ export const newChapters = async (request: Request, storyId: string) => {
 
    return chapter
 }
+
+/**
+ *
+ * @param request
+ * @param id
+ * @returns
+ */
+export const getChapter = async (request: Request, id: string) => {
+   const user = await userExists(request)
+
+   const chapter = await db.chapter.findUnique({ where: { id } })
+
+   if (!chapter) throw new Error("chapter not found")
+
+   return chapter
+}

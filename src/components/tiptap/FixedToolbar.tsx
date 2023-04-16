@@ -143,7 +143,7 @@ const BlockOptions = (props: { editor: Editor }) => {
          btnChildren={<BtnChildren icon={activeOption().icon} label={activeOption().label} />}
          btnClass="bg-slate-100"
          menuClass="bg-white/80 backdrop-blur-sm"
-         fallback={ButtonFallback}
+         fallback={<ButtonFallback />}
       >
          <For each={blockOptions}>
             {(option) => (
@@ -199,7 +199,7 @@ const AlignOptions = (props: { editor: Editor }) => {
          btnChildren={<BtnChildren icon={activeOption().icon} />}
          btnClass="bg-slate-100"
          menuClass="bg-white/80 backdrop-blur-sm"
-         fallback={ButtonFallback}
+         fallback={<ButtonFallback />}
       >
          <For each={formatAlignItems}>
             {(option) => (

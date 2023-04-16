@@ -4,63 +4,51 @@ import BubbleMenu from "@tiptap/extension-bubble-menu"
 import Typography from "@tiptap/extension-typography"
 import Underline from "@tiptap/extension-underline"
 import TextAlign from "@tiptap/extension-text-align"
-import { createSignal, JSX, Show } from "solid-js"
+import { createSignal, JSX, onMount, Resource, Show } from "solid-js"
 import { Toolbar } from "solid-headless"
 import FloatingToolbar from "./FloatingToolbar"
 import FixedToolbar from "./FixedToolbar"
 import { EditorSettingsTypes } from "../Editor"
+import { Chapter } from "@prisma/client"
+import { debounce } from "@solid-primitives/scheduled"
+import { createServerAction$ } from "solid-start/server"
 
-const CONTENT = `
-  <h2>
-  Hi there,
-  </h2>
-  <p>
-  this is a <em>basic</em> example of <strong>tiptap</strong>. Sure, there are all kind of basic text styles you’d probably expect from a text editor. But wait until you see the lists:
-  </p>
-  <ul>
-  <li>
-    That’s a bullet list with one …
-  </li>
-  <li>
-    … or two list items.
-  </li>
-  </ul>
-  <p>
-  Isn’t that great? And all of that is editable. But wait, there’s more. Let’s try a code block:
-  </p>
-  <pre><code class="language-css">body {
-    display: none;
-  }</code></pre>
-  <p>
-  I know, I know, this is impressive. It’s only the tip of the iceberg though. Give it a try and click a little bit around. Don’t forget to check the other examples too.
-  </p>
-  <p>
-  Isn’t that great? And all of that is editable. But wait, there’s more. Let’s try a code block:
-  </p>
-  <pre><code class="language-css">body {
-    display: none;
-  }</code></pre>
-  <p>
-  I know, I know, this is impressive. It’s only the tip of the iceberg though. Give it a try and click a little bit around. Don’t forget to check the other examples too.
-  </p>
-  <p>
-  Isn’t that great? And all of that is editable. But wait, there’s more. Let’s try a code block:
-  </p>
-  <pre><code class="language-css">body {
-    display: none;
-  }</code></pre>
-  <p>
-  I know, I know, this is impressive. It’s only the tip of the iceberg though. Give it a try and click a little bit around. Don’t forget to check the other examples too.
-  </p>
-  <blockquote>
-  Wow, that’s amazing. Good work, boy! 👏
-  <br />
-  — Mom
-  </blockquote>    
-  `
+const [content, setContent] = createSignal<string | null>(null)
+const [title, seTtitle] = createSignal<string | undefined>()
+
+let btnSave: HTMLButtonElement
+
+const SaveChapter = () => {
+   const [enrolling, { Form }] = createServerAction$(async (form: FormData, { request }) => {
+      try {
+         const chapter = form.get("content")
+         const title = form.get("title")
+
+         return { chapter }
+      } catch (error: any) {
+         console.log(error)
+         throw new Error(error.message)
+      }
+   })
+
+   return (
+      <Form>
+         <fieldset disabled={typeof content() !== "string"}>
+            <Show when={typeof content() === "string" && typeof title() === "string"}>
+               <input type="hidden" value={content()?.toString()} name="content" />
+               <input type="hidden" value={title()?.toString()} name="title" />
+            </Show>
+            <button ref={btnSave} type="submit" id="save_chapter" class="btn text-sm btn-ghost-default btn-pill">
+               Save
+            </button>
+         </fieldset>
+      </Form>
+   )
+}
 
 interface TipEditorProps {
    editorSettings: EditorSettingsTypes
+   chapter: Resource<Chapter | undefined>
 }
 
 export default function TiptapEditor(props: TipEditorProps): JSX.Element {
@@ -81,8 +69,30 @@ export default function TiptapEditor(props: TipEditorProps): JSX.Element {
             class: "p-2 md:p-8 focus:outline-none prose max-w-full",
          },
       },
-      content: CONTENT,
+      content: `${props.chapter()?.content || "<p></p>"}`,
+      onUpdate: ({ editor }) => {
+         const content = editor.getHTML()
+
+         const firstLine = editor?.getJSON()?.content?.at(0)
+         const title =
+            firstLine?.type === "heading" && firstLine?.content?.at(0)?.text
+               ? firstLine?.content?.at(0)?.text
+               : "untitled"
+
+         console.log(firstLine)
+
+         setContent(content)
+         seTtitle(title)
+
+         trigger()
+      },
    }))
+
+   const trigger = debounce(() => btnSave.click(), 10000)
+
+   onMount(() => {
+      editor()?.commands.focus("end")
+   })
 
    return (
       <>
@@ -95,13 +105,15 @@ export default function TiptapEditor(props: TipEditorProps): JSX.Element {
          <div class={`${props.editorSettings.toolbar_position}  relative`}>
             <Show when={editor()} keyed>
                {(instance) => (
-                  <div class="FixedToolbar sticky w-full p-2 rounded-xl bg-white/70 backdrop-blur-sm shadow-8 z-10">
+                  <div class="FixedToolbar sticky w-full p-1 rounded-xl bg-white/70 backdrop-blur-sm border z-10">
                      <FixedToolbar editor={instance} />
                   </div>
                )}
             </Show>
 
-            <div class="min-h-[80vh]" ref={setContainer} />
+            <div class="min-h-[80vh]" onClick={() => editor()?.commands.focus()} ref={setContainer} />
+
+            <SaveChapter />
          </div>
       </>
    )

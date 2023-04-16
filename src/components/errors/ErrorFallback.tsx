@@ -9,6 +9,10 @@ export default ({ e }: { e: any }) => {
             <Match when={e.message === "NetworkError when attempting to fetch resource."}>
                <h2>Network Error</h2>
             </Match>
+
+            <Match when={e.message === "chapter not found"}>
+               <h2>chapter not found</h2>
+            </Match>
          </Switch>
       </div>
    )

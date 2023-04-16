@@ -61,7 +61,7 @@
    }
 
    .btn {
-      @apply space-x-2 focus-visible:outline-none shrink-0 relative  transition-all font-semibold border-none text-center flex items-center justify-center cursor-pointer outline-none disabled:opacity-30 disabled:pointer-events-none 
+      @apply space-x-2 focus-visible:outline-none shrink-0 relative  transition-all font-semibold border-none text-center flex items-center justify-center cursor-pointer outline-none disabled:opacity-60 disabled:pointer-events-none 
       after:rounded-xl after:outline after:outline-emerald-500 after:outline-offset-4 focus-visible:after:block;
    }
 
