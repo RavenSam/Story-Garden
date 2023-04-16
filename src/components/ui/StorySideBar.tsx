@@ -124,36 +124,38 @@ export default function StorySideBar(props: SideBarProps) {
    onCleanup(() => (typeof window === "undefined" ? null : window?.removeEventListener("resize", handleResize)))
 
    return (
-      <>
-         <div
-            style={{
-               width: mobileScreen() ? "100%" : sideNavWidth() + "px",
-               "max-width": SIDENAV_MAX_WIDTH + "px",
-               transform: mobileScreen() ? (open() ? "translateX(0)" : "translateX(-100%)") : "translateX(0)",
-            }}
-            class="fixed left-0 top-0 bottom-0 bg-slate-800 p-2 transition-all z-[15]"
-         >
-            <nav class="space-y-1 flex flex-col h-full pt-20">
-               <For each={navList}>{(item) => <SideLink item={item} />}</For>
-
-               <div class="!mt-auto">
-                  <Show when={params.chapter}>
-                     <EditorSettingsModal mobileScreen={mobileScreen} open={open} />
-                  </Show>
-               </div>
-            </nav>
-
-            <button
-               onClick={() => setOpen((prev) => !prev)}
-               class="absolute top-0 right-0 translate-x-full text-xl p-5  btn rounded-xl text-slate-700 hover:text-black"
+      <Show when={!params.chapter} fallback={<main>{props.children}</main>}>
+         <>
+            <div
+               style={{
+                  width: mobileScreen() ? "100%" : sideNavWidth() + "px",
+                  "max-width": SIDENAV_MAX_WIDTH + "px",
+                  transform: mobileScreen() ? (open() ? "translateX(0)" : "translateX(-100%)") : "translateX(0)",
+               }}
+               class="fixed left-0 top-0 bottom-0 bg-slate-800 p-2 transition-all z-[15]"
             >
-               <HiSolidMenuAlt2 class="text-2xl" />
-            </button>
-         </div>
+               <nav class="space-y-1 flex flex-col h-full pt-20">
+                  <For each={navList}>{(item) => <SideLink item={item} />}</For>
 
-         <main style={{ "margin-left": mobileScreen() ? 0 : sideNavWidth() + "px" }} class="transition-[margin]">
-            {props.children}
-         </main>
-      </>
+                  <div class="!mt-auto">
+                     {/* <Show when={params.chapter}>
+                     <EditorSettingsModal mobileScreen={mobileScreen} open={open} />
+                  </Show> */}
+                  </div>
+               </nav>
+
+               <button
+                  onClick={() => setOpen((prev) => !prev)}
+                  class="absolute top-0 right-0 translate-x-full text-xl p-5  btn rounded-xl text-slate-700 hover:text-black"
+               >
+                  <HiSolidMenuAlt2 class="text-2xl" />
+               </button>
+            </div>
+
+            <main style={{ "margin-left": mobileScreen() ? 0 : sideNavWidth() + "px" }} class="transition-[margin]">
+               {props.children}
+            </main>
+         </>
+      </Show>
    )
 }

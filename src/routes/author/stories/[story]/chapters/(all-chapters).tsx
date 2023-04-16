@@ -95,7 +95,7 @@ export default function Manuscript() {
                         <A href={item.id} class="rounded-xl flex items-center justify-between shadow-8 p-4">
                            <span class="font-bold">{item.title}</span>
                            <span class="">{item.word_count}</span>
-                           <span title={format(item.updatedAt, "MMMM dd YYY")} class="text-xs">
+                           <span title={format(item?.updatedAt, "MMMM dd YYY")} class="text-xs">
                               {formatDistanceToNow(item.updatedAt)} ago
                            </span>
                         </A>
