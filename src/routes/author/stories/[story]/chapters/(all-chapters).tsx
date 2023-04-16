@@ -69,11 +69,13 @@ export const routeData = ({ params }: RouteDataArgs) => {
 export default function Manuscript() {
    const story = useRouteData<typeof routeData>()
 
-   createEffect(() => setStoryId(story()?.id))
+   onMount(() => {
+      setStoryId(story()?.id)
+   })
 
    return (
       <>
-         <Title>Chapters - {story()?.title} | Story Garden</Title>
+         <Title>Chapters- {story()?.title} | Story Garden</Title>
          <Meta
             name="description"
             content={`Explore the chapters of ${
@@ -95,9 +97,11 @@ export default function Manuscript() {
                         <A href={item.id} class="rounded-xl flex items-center justify-between shadow-8 p-4">
                            <span class="font-bold">{item.title}</span>
                            <span class="">{item.word_count}</span>
-                           <span title={format(item?.updatedAt, "MMMM dd YYY")} class="text-xs">
-                              {formatDistanceToNow(item.updatedAt)} ago
-                           </span>
+                           <Show when={typeof item?.updatedAt !== "string"} fallback={<span>Date</span>}>
+                              <span title={format(item?.updatedAt, "MMMM dd YYY")} class="text-xs">
+                                 {formatDistanceToNow(item.updatedAt)} ago
+                              </span>
+                           </Show>
                         </A>
                      )}
                   </For>
